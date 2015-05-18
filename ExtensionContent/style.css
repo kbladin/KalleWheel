@@ -1,0 +1,119 @@
+
+body {
+text-align:center;
+margin: 0;
+}
+
+button, select, input
+{
+border:1px solid;
+height:19px;
+}
+
+input[type=text]
+{
+height:16px;
+}
+
+#content {
+margin-right:auto;
+margin-left:auto;
+vertical-align:middle;
+width:100%;
+}
+
+#content ul {
+padding:0px;
+}
+
+#content ul li {
+margin:0px;
+}
+
+#wheelCanvas{
+    position: absolute;
+	width: 90vw;
+	height: 90vw;
+    top: 0;
+    left: 0;
+    margin: 5vw 5vw 0vw 5vw; 
+}
+
+#dotsCanvas{
+    position: absolute;
+	width: 90vw;
+	height: 90vw;
+    top: 0;
+    left: 0;
+    margin: 5vw 5vw 0vw 5vw;
+}
+
+#lightnessSlider {
+    margin: 100vw 0px 0px 0px;
+
+    -webkit-appearance: none;
+
+    width: 90vw;
+    height: 10px;
+    
+
+    border-radius:  10px;
+    
+    background: -webkit-linear-gradient(left, black , white); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, black , white); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, black , white); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, black , white); /* Standard syntax */   
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: default-button;
+    width: 5px;
+    height: 5px;
+    cursor: pointer;
+}
+
+.unselectable {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+/*RADIO BUTTON*/
+
+input[type="radio"] {
+    display:none;
+}
+
+input[type="radio"] + label {
+    color: black;
+    font-family:Arial, sans-serif;
+    font-size:14px;
+}
+
+input[type="radio"] + label span {
+    display:inline-block;
+    width:10vw;
+    height:10vw;
+    margin:-1px 4px 0 0;
+    vertical-align:middle;
+    cursor:pointer;
+    -moz-border-radius:  20%;
+    border-radius:  20%;
+}
+
+input[type="radio"] + label span {
+     background-color: black;
+         border: 2px solid black;
+}
+
+input[type="radio"]:checked + label span{
+    border: 2px solid white;
+}
+
+input[type="radio"] + label span,
+input[type="radio"]:checked + label span {
+  -webkit-transition:border-color 0.2s linear;
+  -o-transition:border-color 0.2s linear;
+  -moz-transition:border-color 0.2s linear;
+  transition:border-color 0.2s linear;
+}
