@@ -6,14 +6,12 @@ function radioButtonChanged() {
 }
 
 function exportForegroundColor() {
-      /*
       var form = document.getElementById("colorButtons");
       
-      var RGB = cs.colorGlyphs[form.elements["color"].value].color.rgb();
+      var RGB = cs.colorGlyphs[form.elements["color"].value].getColor().rgb();
       var js = "setForegroundColorRGB(" + RGB[0] + "," + RGB[1] + "," + RGB[2] + ");";
       var csInterface = new CSInterface();
       csInterface.evalScript(js);
-      */
 }
       
 function mouseDown(e) {
@@ -49,6 +47,7 @@ function moveDots(e) {
             cs.drawCross(0,0);
             cs.drawColorGlyphs();
       }
+      updateSlider();
       updateColor();
 }
 
@@ -58,18 +57,21 @@ function updateColor() {
       var y = cs.colorGlyphs[index].y;
       
       var l = +document.getElementById("lightnessSlider").value;
-      var c = cs.getSaturation01(x, y) * 100;
-      var h = cs.getHue(x, y) / (2 * Math.PI) * 360;
-      cs.colors[cs.getActiveColorIndex()] = new chroma.lch(l,c,h);
+      var c = getSaturation01(x, y) * 100;
+      var h = getHue(x, y) / (2 * Math.PI) * 360;
+      cs.colorGlyphs[cs.getActiveColorIndex()].z = l;
       drawCanvas();
 }
 
 function updateSlider() {
-      var lch = cs.colors[cs.getActiveColorIndex()].lch();
-      document.getElementById("lightnessSlider").value = lch[0];
+      var z = cs.colorGlyphs[cs.getActiveColorIndex()].z;
+      document.getElementById("lightnessSlider").value = z;
 }
 
 var cs = new CanvasState(document.getElementById("wheelCanvas"), document.getElementById("dotsCanvas"));
+cs.addColor(0,0);
+cs.addColor(0,0);
+cs.addColor(0,0);
 cs.addColor(0,0);
 cs.addColor(0,0);
 cs.addColor(0,0);
@@ -78,3 +80,21 @@ cs.addColorRadioButtons(document.getElementById("colorButtons"));
 drawCanvas();
 
 
+
+
+
+
+var event = new CSEvent();
+event.type = "com.adobe.PhotoshopRegisterEvent";
+event.scope = "APPLICATION";
+event.data = "1668247673, 1885434740";
+ 
+var hej = new CSInterface();
+hej.dispatchEvent(event);
+ 
+hej.addEventListener(
+	"PhotoshopCallback", 
+	function(e) {
+		alert("event: " + e.data);
+	}
+);

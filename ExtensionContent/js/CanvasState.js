@@ -1,13 +1,30 @@
+function getHue(x, y) {
+	var theta = Math.atan2(y,-x) + Math.PI;
+	return theta;
+};
+
+function getSaturation01(x, y) {
+	return (Math.sqrt(Math.pow(x,2) + Math.pow(y,2)));
+};
+
+
 function ColorGlyph (x, y, index) {
     this.x = x;
     this.y = y;
+    this.z = 50;
     this.index = index;
 }
+
+ColorGlyph.prototype.getColor = function() {
+	return chroma.lch(
+                    this.z,
+                    getSaturation01(this.x, this.y) * 100,
+                    getHue(this.x, this.y) / (2 * Math.PI) * 360);
+};
 
 function CanvasState(background, foreground) {
     this.background = background;
     this.foreground = foreground;
-    this.colors = []; // chroma objects
     this.colorGlyphs = [];
     this.borderSize = 20;
     this.mouseDown = false;
@@ -20,20 +37,10 @@ function CanvasState(background, foreground) {
 
 CanvasState.prototype.addColor = function(x, y) {
 	this.colorGlyphs.push(new ColorGlyph(x, y, this.colorGlyphs.length));
-    this.colors.push(new chroma.lch(50,1,1));
 };
 
 CanvasState.prototype.getActiveColorIndex = function() {
     return document.getElementById("colorButtons").elements["color"].value;
-};
-
-CanvasState.prototype.getHue = function(x, y) {
-	var theta = Math.atan2(y,-x) + Math.PI;
-	return theta;
-};
-
-CanvasState.prototype.getSaturation01 = function(x, y) {
-	return (Math.sqrt(Math.pow(x,2) + Math.pow(y,2)));
 };
 
 CanvasState.prototype.addColorRadioButtons = function(element) {
@@ -58,7 +65,7 @@ CanvasState.prototype.addColorRadioButtons = function(element) {
 };
 
 CanvasState.prototype.drawBackground = function() {
-    var lightness = this.colors[this.getActiveColorIndex()].lch()[0];
+    var lightness = this.colorGlyphs[this.getActiveColorIndex()].z;
     
     var context = this.background.getContext("2d");
     
@@ -77,8 +84,8 @@ CanvasState.prototype.drawBackground = function() {
                 var index = 4 * (x + y * width);
                 var color = chroma.lch(
                     lightness,
-                    this.getSaturation01(x / radius - 1, y / radius - 1) * 100,
-                    this.getHue(x / radius - 1, y / radius - 1) / (2 * Math.PI) * 360).rgb();
+                    getSaturation01(x / radius - 1, y / radius - 1) * 100,
+                    getHue(x / radius - 1, y / radius - 1) / (2 * Math.PI) * 360).rgb();
                 imageData.data[index + 0] = color[0];
                 imageData.data[index + 1] = color[1];
                 imageData.data[index + 2] = color[2];
@@ -102,7 +109,12 @@ CanvasState.prototype.drawCross = function(x,y) {
     
     var crossSize = 10;
         
-    context.strokeStyle = '#000000';
+    var paintColor;
+    if (this.colorGlyphs[this.getActiveColorIndex()].z >= 50)
+        paintColor = '#000000';
+    else
+        paintColor = '#FFFFFF';
+    context.strokeStyle = paintColor;
     context.lineWidth = 2;
     
     context.beginPath();
@@ -125,6 +137,11 @@ CanvasState.prototype.drawColorGlyphs = function() {
     var centerY = height / 2;
     
     var lineWidth = this.borderSize;
+    var paintColor;
+    if (this.colorGlyphs[this.getActiveColorIndex()].z >= 50)
+        paintColor = '#000000';
+    else
+        paintColor = '#FFFFFF';
     
     // Draw the border
     context.beginPath();
@@ -132,8 +149,6 @@ CanvasState.prototype.drawColorGlyphs = function() {
     context.lineWidth = lineWidth;
     context.strokeStyle = '#444444';
     context.stroke();
-    
-    //this.colorDots[form.elements["color"].value].l = document.getElementById("lightnessSlider").value / 100;
     
     var activeColor = this.getActiveColorIndex();    
     for (var i = 0; i < this.colorGlyphs.length; i++) {
@@ -154,15 +169,16 @@ CanvasState.prototype.drawColorGlyphs = function() {
         */
         context.beginPath();
         context.arc((this.colorGlyphs[i].x + 1) * radius,(this.colorGlyphs[i].y + 1) * radius, dotSize, 0, 2 * Math.PI, false);
-        context.fillStyle = this.colors[i].hex();
+        var color = this.colorGlyphs[i].getColor();
+        context.fillStyle = color.hex();
         context.fill();
         
-        context.strokeStyle = '#000000';
+        context.strokeStyle = paintColor;
         context.stroke();
         
         // Change color of the selected radio button (could be done after the loop on only one)
         var span = document.getElementById("radio" + i).nextSibling.firstChild;
-        span.style.backgroundColor = this.colors[i].hex();
+        span.style.backgroundColor = color.hex();
     }
 };
 
