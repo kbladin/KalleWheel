@@ -48,8 +48,20 @@ margin:0px;
     margin: 5vw 5vw 0vw 5vw;
 }
 
+#lightnessValue {
+    margin: 97vw 10px 2vw 10px;
+    width: 23px;
+    text-align: center;
+    
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 12px;
+    color: white;
+    background-color: black;
+    border-radius:  20%;
+}
+
 #lightnessSlider {
-    margin: 100vw 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
 
     -webkit-appearance: none;
 

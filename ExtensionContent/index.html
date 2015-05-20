@@ -17,9 +17,11 @@
       
       <canvas id="wheelCanvas" width="100" height="100" class="unselectable"></canvas>
       <canvas id="dotsCanvas" width="600" height="600" class="unselectable" onmousemove="moveDots(event)" onmousedown="mouseDown(event)" onmouseup="mouseUp()" onmouseout="mouseUp()"></canvas>
+      <input id="lightnessValue" type="text" value="0" onkeyup="textInputValue()">
       <input id="lightnessSlider" type="range" class="unselectable" onchange="updateColor()" onmouseup="" onmouseout="">
       <form id="colorButtons" class="unselectable"></form>
       <div id="colorOptions">
+            <input id="traceLinesCheckBox" type="checkbox" onchange="toggleDrawTraceLines()"></input>   
             <input id="lightSourceCheckBox" type="checkbox" onchange="toggleLightSource()"></input>   
             <input id="lockedCheckBox" type="checkbox" onchange="toggleLock()"></input>
       </div>

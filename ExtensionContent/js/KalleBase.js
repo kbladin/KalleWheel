@@ -1,3 +1,21 @@
+function updateLightnessValue() {
+      document.getElementById("lightnessValue").value = document.getElementById("lightnessSlider").value;
+}
+
+function textInputValue() {
+      var newVal;
+      if (  document.getElementById("lightnessValue").value == ""){
+            return;
+      }
+      else if (document.getElementById("lightnessValue").value < 0)
+            newVal = 0;
+      else if (document.getElementById("lightnessValue").value > 100)
+            newVal = 100;
+      else
+            newVal = document.getElementById("lightnessValue").value;
+      document.getElementById("lightnessSlider").value = newVal;
+      updateColor();
+}
 
 function radioButtonChanged() {
       drawCanvas();
@@ -47,6 +65,7 @@ function drawCanvas() {
       cs.clearForeground();
       cs.drawCross(0,0);
       cs.drawLightTraceLines();
+      cs.drawExternalLightTraceLines();
       cs.drawColorGlyphs();
 }
 
@@ -67,6 +86,7 @@ function moveDots(e) {
             cs.clearForeground();
             cs.drawCross(0,0);
             cs.drawLightTraceLines();
+            cs.drawExternalLightTraceLines();
             cs.drawColorGlyphs();
       }
       updateSlider();
@@ -77,6 +97,7 @@ function moveDots(e) {
 function updateColor() {
       var l = +document.getElementById("lightnessSlider").value;
       cs.colorGlyphs[cs.getActiveColorIndex()].z = l;
+      updateLightnessValue();
       drawCanvas();
 }
 
@@ -86,8 +107,18 @@ function updateSlider() {
 }
 
 function updateCheckBoxes() {
+      document.getElementById("traceLinesCheckBox").checked = cs.colorGlyphs[cs.getActiveColorIndex()].drawLightTraceLines;
       document.getElementById("lockedCheckBox").checked = cs.colorGlyphs[cs.getActiveColorIndex()].locked;
       document.getElementById("lightSourceCheckBox").checked = cs.colorGlyphs[cs.getActiveColorIndex()].isLightSource;
+}
+
+function toggleDrawTraceLines() {
+      cs.colorGlyphs[cs.getActiveColorIndex()].drawLightTraceLines = document.getElementById("traceLinesCheckBox").checked;
+      cs.clearForeground();
+      cs.drawCross(0,0);
+      cs.drawLightTraceLines();
+      cs.drawExternalLightTraceLines();
+      cs.drawColorGlyphs();
 }
 
 function toggleLock() {
@@ -95,6 +126,7 @@ function toggleLock() {
       cs.clearForeground();
       cs.drawCross(0,0);
       cs.drawLightTraceLines();
+      cs.drawExternalLightTraceLines();
       cs.drawColorGlyphs();
 }
 
@@ -103,6 +135,7 @@ function toggleLightSource() {
       cs.clearForeground();
       cs.drawCross(0,0);
       cs.drawLightTraceLines();
+      cs.drawExternalLightTraceLines();
       cs.drawColorGlyphs();
 }
 
@@ -116,6 +149,7 @@ cs.addColor(0,0);
 cs.addColor(0,0);
 cs.addColorRadioButtons(document.getElementById("colorButtons"));
 
+updateColor();
 drawCanvas();
 
 

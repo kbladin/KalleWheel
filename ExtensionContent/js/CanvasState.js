@@ -14,6 +14,7 @@ function ColorGlyph (x, y, index) {
     this.z = 50;
     this.locked = false;
     this.isLightSource = false;
+    this.drawLightTraceLines = false;
     this.index = index;
 }
 
@@ -171,6 +172,36 @@ CanvasState.prototype.drawLightTraceLines = function() {
     }
 };
 
+CanvasState.prototype.drawExternalLightTraceLines = function() {
+    var canvas = this.foreground;
+    var context = canvas.getContext("2d");
+    var width  = canvas.width;
+    var height = canvas.height;
+    var radius = Math.min(width/2, height/2);
+    
+    var paintColor;
+    if (this.colorGlyphs[this.getActiveColorIndex()].z >= 50)
+        paintColor = '#000000';
+    else
+        paintColor = '#FFFFFF';
+    context.strokeStyle = paintColor;
+    context.lineWidth = 2;
+    
+    for (var i = 0; i < this.colorGlyphs.length; i++) {
+        if (this.colorGlyphs[i].drawLightTraceLines){
+            for (var j = 0; j < this.colorGlyphs.length; j++) {
+                if (this.colorGlyphs[j].isLightSource){
+                    context.beginPath();
+                    context.moveTo((this.colorGlyphs[i].x + 1) * radius, (this.colorGlyphs[i].y + 1) * radius);
+                    context.lineTo((this.colorGlyphs[i].x + this.colorGlyphs[j].x + 1) * radius,(this.colorGlyphs[i].y + this.colorGlyphs[j].y + 1) * radius);
+                    context.closePath();
+                    context.stroke();
+                }
+            }
+        }
+    }
+};
+
 CanvasState.prototype.drawColorGlyphs = function() {
     var canvas = this.foreground;
     var context = canvas.getContext("2d");
@@ -285,17 +316,12 @@ CanvasState.prototype.updateSelectedIndex = function(x, y, offset) {
         var dotX = this.colorGlyphs[i].x;
         var dotY = this.colorGlyphs[i].y;
         var dist = Math.sqrt(Math.pow(x - dotX,2) + Math.pow(y - dotY,2));
-        if (dist < minDist) {
+        if (dist < minDist && dist < offset) {
             minDist = dist;
             index = i;
         }
     }
-    if (minDist < offset) {
-        this.selectedIndex = index;
-    }
-    else {
-        this.selectedIndex = -1;
-    }
+    this.selectedIndex = index;
     
     if (this.selectedIndex != -1) {
         var form = document.getElementById("colorButtons");
