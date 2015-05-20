@@ -131,9 +131,71 @@ input[type="radio"]:checked + label span {
 }
 
 #colorOptions {
-    
+
 }
 
-#lockedCheckBox {
+/*CHECK BOX, Icons made by Freepik from www.flaticon.com */
 
+.colorOptionsCheckbox {
+    display:none;
+}
+
+.colorOptionsCheckbox + label span {
+    display:inline-block;
+    width:15px;
+    height:15px;
+    background: url(images/icons/unlocked44.svg);
+    background-size: 15px 15px;
+    
+    margin:4px 2px 4px 2px;
+    vertical-align:middle;
+    cursor:pointer;
+    -moz-border-radius:  20%;
+    border-radius:  20%;
+}
+
+.colorOptionsCheckbox + label span {
+    border: 2px solid black;
+}
+
+.colorOptionsCheckbox:checked + label span{
+    background: url(images/icons/locked59.svg);
+    background-size: 15px 15px;
+    background-color: gray;
+}
+
+/* Tracelines Checkbox */
+#traceLinesCheckBox + label span {
+    background: url(images/icons/right218.svg);
+    background-size: 15px 15px;
+}
+
+#traceLinesCheckBox:checked + label span{
+    background: url(images/icons/right218.svg);
+    background-size: 15px 15px;
+    background-color: gray;
+}
+
+/* Lightsource Checkbox */
+#lightSourceCheckBox + label span {
+    background: url(images/icons/idea14.svg);
+    background-size: 15px 15px;
+}
+
+#lightSourceCheckBox:checked + label span{
+    background: url(images/icons/idea14.svg);
+    background-size: 15px 15px;
+    background-color: gray;
+}
+
+/* Locked Checkbox */
+#lockedCheckBox + label span {
+    background: url(images/icons/unlocked44.svg);
+    background-size: 15px 15px;
+}
+
+#lockedCheckBox:checked + label span{
+    background: url(images/icons/locked59.svg);
+    background-size: 15px 15px;
+    background-color: gray;
 }

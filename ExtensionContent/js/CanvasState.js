@@ -193,7 +193,16 @@ CanvasState.prototype.drawExternalLightTraceLines = function() {
                 if (this.colorGlyphs[j].isLightSource){
                     context.beginPath();
                     context.moveTo((this.colorGlyphs[i].x + 1) * radius, (this.colorGlyphs[i].y + 1) * radius);
-                    context.lineTo((this.colorGlyphs[i].x + this.colorGlyphs[j].x + 1) * radius,(this.colorGlyphs[i].y + this.colorGlyphs[j].y + 1) * radius);
+                    var lineToX = this.colorGlyphs[i].x + this.colorGlyphs[j].x;
+                    var lineToY = this.colorGlyphs[i].y + this.colorGlyphs[j].y;
+                    
+                    var norm = Math.sqrt(Math.pow(lineToX,2) + Math.pow(lineToY,2)) + this.borderSize/270;
+                    if (norm > 1) {
+                        lineToX = lineToX / norm;
+                        lineToY = lineToY / norm;
+                    }
+                    
+                    context.lineTo((lineToX + 1) * radius, (lineToY + 1) * radius);
                     context.closePath();
                     context.stroke();
                 }

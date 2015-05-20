@@ -21,9 +21,9 @@
       <input id="lightnessSlider" type="range" class="unselectable" onchange="updateColor()" onmouseup="" onmouseout="">
       <form id="colorButtons" class="unselectable"></form>
       <div id="colorOptions">
-            <input id="traceLinesCheckBox" type="checkbox" onchange="toggleDrawTraceLines()"></input>   
-            <input id="lightSourceCheckBox" type="checkbox" onchange="toggleLightSource()"></input>   
-            <input id="lockedCheckBox" type="checkbox" onchange="toggleLock()"></input>
+            <abbr title="Toggle trace lines (towards lightsources)"><input id="traceLinesCheckBox" class="colorOptionsCheckbox" type="checkbox" onchange="toggleDrawTraceLines()"/><label for="traceLinesCheckBox"><span/></label></abbr>
+            <abbr title="Toggle light source"><input id="lightSourceCheckBox" class="colorOptionsCheckbox" type="checkbox" onchange="toggleLightSource()"/><label for="lightSourceCheckBox"><span/></label></abbr>
+            <abbr title="Toggle lock"><input id="lockedCheckBox" class="colorOptionsCheckbox" type="checkbox" onchange="toggleLock()"/><label for="lockedCheckBox"><span/></label></abbr>
       </div>
       <button onclick="newColor()">New Color</button>
       <button>Delete Color</button>
