@@ -117,3 +117,11 @@ input[type="radio"]:checked + label span {
   -moz-transition:border-color 0.2s linear;
   transition:border-color 0.2s linear;
 }
+
+#colorOptions {
+    
+}
+
+#lockedCheckBox {
+
+}

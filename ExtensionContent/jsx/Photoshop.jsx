@@ -26,3 +26,27 @@ function setForegroundColorRGB(r, g, b) {
     
     //app.togglePalettes();    app.togglePalettes();
 };
+
+function getForegroundColorRGB() {
+    var json = '{"r":"' + app.foregroundColor.rgb.red +
+             '", "g":"' + app.foregroundColor.rgb.green +
+             '", "b":"' + app.foregroundColor.rgb.blue + '"}';
+    var json = '[' + json + ']'; // Wrap the JSON
+    sendEvent("foo.bar", json);
+};
+
+
+var xLib;
+try {
+	xLib = new ExternalObject("lib:\PlugPlugExternalObject");
+} catch(e) { alert("Missing ExternalObject: "+e); }
+ 
+// send an event from the tool VM
+function sendEvent(type, dataObject) {
+	if (xLib) {
+		var eventObj = new CSXSEvent();
+		eventObj.type = type;
+		eventObj.data = dataObject;
+		eventObj.dispatch();
+	}
+}

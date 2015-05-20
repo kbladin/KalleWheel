@@ -12,6 +12,8 @@ function ColorGlyph (x, y, index) {
     this.x = x;
     this.y = y;
     this.z = 50;
+    this.locked = false;
+    this.isLightSource = false;
     this.index = index;
 }
 
@@ -20,6 +22,20 @@ ColorGlyph.prototype.getColor = function() {
                     this.z,
                     getSaturation01(this.x, this.y) * 100,
                     getHue(this.x, this.y) / (2 * Math.PI) * 360);
+};
+
+ColorGlyph.prototype.setColor = function(r, g, b) {
+    var LCH = chroma.rgb(r, g, b).lch();
+    this.x = LCH[1] / 100 * Math.cos(LCH[2] / 360 * (2 * Math.PI));
+    this.y = - LCH[1] / 100 * Math.sin(LCH[2] / 360 * (2 * Math.PI));
+    this.z = LCH[0];
+    
+    var norm = Math.sqrt(Math.pow(this.x,2) + Math.pow(this.y,2)) + 20/270; // 20 = bordersize hardcoded...
+    if (norm > 1) {
+        this.x = this.x / norm;
+        this.y = this.y / norm;
+        alert("Warning: Color normalized!");
+    }
 };
 
 function CanvasState(background, foreground) {
@@ -124,7 +140,36 @@ CanvasState.prototype.drawCross = function(x,y) {
     context.lineTo(-crossSize + (x + 1) * radius,crossSize + (y + 1) * radius);
     context.closePath();
     context.stroke();
-}
+};
+
+CanvasState.prototype.drawLightTraceLines = function() {
+    var canvas = this.foreground;
+    var context = canvas.getContext("2d");
+    var width  = canvas.width;
+    var height = canvas.height;
+    var radius = Math.min(width/2, height/2);
+    
+    var centerX = width / 2;
+    var centerY = height / 2;
+    
+    var paintColor;
+    if (this.colorGlyphs[this.getActiveColorIndex()].z >= 50)
+        paintColor = '#000000';
+    else
+        paintColor = '#FFFFFF';
+    context.strokeStyle = paintColor;
+    context.lineWidth = 2;
+    
+    for (var i = 0; i < this.colorGlyphs.length; i++) {
+        if (this.colorGlyphs[i].isLightSource){
+            context.beginPath();
+            context.moveTo(centerX, centerY);
+            context.lineTo((this.colorGlyphs[i].x + 1) * radius,(this.colorGlyphs[i].y + 1) * radius);
+            context.closePath();
+            context.stroke();
+        }
+    }
+};
 
 CanvasState.prototype.drawColorGlyphs = function() {
     var canvas = this.foreground;
@@ -137,11 +182,11 @@ CanvasState.prototype.drawColorGlyphs = function() {
     var centerY = height / 2;
     
     var lineWidth = this.borderSize;
-    var paintColor;
+    var borderColor;
     if (this.colorGlyphs[this.getActiveColorIndex()].z >= 50)
-        paintColor = '#000000';
+        borderColor = '#000000';
     else
-        paintColor = '#FFFFFF';
+        borderColor = '#FFFFFF';
     
     // Draw the border
     context.beginPath();
@@ -161,21 +206,27 @@ CanvasState.prototype.drawColorGlyphs = function() {
             context.lineWidth = 2;
             dotSize = 7;
         }
-        /*
-        this.colorDots[i].color = chroma.lch(
-                    this.colorDots[i].l * 100,
-                    getSaturation01(this.colorDots[i].x, this.colorDots[i].y) * 100,
-                    getHue(this.colorDots[i].x, this.colorDots[i].y) / (2 * Math.PI) * 360);
-        */
-        context.beginPath();
-        context.arc((this.colorGlyphs[i].x + 1) * radius,(this.colorGlyphs[i].y + 1) * radius, dotSize, 0, 2 * Math.PI, false);
         var color = this.colorGlyphs[i].getColor();
         context.fillStyle = color.hex();
-        context.fill();
+        context.strokeStyle = borderColor;
         
-        context.strokeStyle = paintColor;
-        context.stroke();
-        
+        if (!this.colorGlyphs[i].locked) {
+            context.beginPath();
+            context.arc((this.colorGlyphs[i].x + 1) * radius,(this.colorGlyphs[i].y + 1) * radius, dotSize, 0, 2 * Math.PI, false);
+            context.fill();
+            context.stroke();
+        } else {
+            var xPos = (this.colorGlyphs[i].x + 1) * radius;
+            var yPos = (this.colorGlyphs[i].y + 1) * radius;
+            context.beginPath();
+            context.moveTo(xPos - dotSize, yPos - dotSize);
+            context.lineTo(xPos + dotSize, yPos - dotSize);
+            context.lineTo(xPos + dotSize, yPos + dotSize);
+            context.lineTo(xPos - dotSize, yPos + dotSize);
+            context.closePath();
+            context.fill();
+            context.stroke();
+        }
         // Change color of the selected radio button (could be done after the loop on only one)
         var span = document.getElementById("radio" + i).nextSibling.firstChild;
         span.style.backgroundColor = color.hex();
