@@ -62,6 +62,7 @@ function mouseUp(e) {
       
 function drawCanvas() {
       cs.drawBackground();
+      cs.drawSliderBackground();
       cs.clearForeground();
       cs.drawCross(0,0);
       cs.drawLightTraceLines();
@@ -140,13 +141,12 @@ function toggleLightSource() {
 }
 
 
-var cs = new CanvasState(document.getElementById("wheelCanvas"), document.getElementById("dotsCanvas"));
-cs.addColor(0,0);
-cs.addColor(0,0);
-cs.addColor(0,0);
-cs.addColor(0,0);
-cs.addColor(0,0);
-cs.addColor(0,0);
+var cs = new CanvasState(document.getElementById("wheelCanvas"), document.getElementById("dotsCanvas"), document.getElementById("sliderBackgroundCanvas"));
+for (var i = 0; i < 12; i++) {
+      cs.addColor(0,0);
+}
+
+
 cs.addColorRadioButtons(document.getElementById("colorButtons"));
 
 updateColor();

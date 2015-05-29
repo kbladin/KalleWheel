@@ -39,9 +39,10 @@ ColorGlyph.prototype.setColor = function(r, g, b) {
     }
 };
 
-function CanvasState(background, foreground) {
+function CanvasState(background, foreground, sliderBackground) {
     this.background = background;
     this.foreground = foreground;
+    this.sliderBackground = sliderBackground;
     this.colorGlyphs = [];
     this.borderSize = 20;
     this.mouseDown = false;
@@ -111,6 +112,38 @@ CanvasState.prototype.drawBackground = function() {
         }
     }
     context.putImageData(imageData, 0, 0);
+};
+
+CanvasState.prototype.drawSliderBackground = function() {
+    var lightness = this.colorGlyphs[this.getActiveColorIndex()].z;
+    
+    var context = this.sliderBackground.getContext("2d");
+    
+    var width  = this.sliderBackground.width;
+    var height = this.sliderBackground.height;
+    
+    var centerX = width / 2;
+    var centerY = height / 2;
+    var lineWidth = 2;
+    var radius = Math.min(width/2, height/2) - lineWidth;
+    
+    var imageData = context.createImageData(width, height);
+    for (var x = 0; x < width; x++) {
+        for (var y = 0; y < height; y++) {
+            var index = 4 * (x + y * width);
+            var colorGlyph = this.colorGlyphs[this.getActiveColorIndex()];
+            var color = chroma.lch(
+                x / width * 100,
+                getSaturation01(colorGlyph.x, colorGlyph.y) * 100,
+                getHue(colorGlyph.x, colorGlyph.y) / (2 * Math.PI) * 360).rgb();
+            imageData.data[index + 0] = color[0];
+            imageData.data[index + 1] = color[1];
+            imageData.data[index + 2] = color[2];
+            imageData.data[index + 3] = 255;
+        }
+    }
+    context.putImageData(imageData, 0, 0);
+    //document.getElementById("lightnessSlider").style.backgroundImage = " url('" + this.sliderBackground.toDataURL() + "')";
 };
 
 CanvasState.prototype.clearForeground = function() {

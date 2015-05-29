@@ -1,7 +1,7 @@
 
 body {
 text-align:center;
-margin: 0;
+margin: 5vw;
 }
 
 button, select, input
@@ -48,8 +48,22 @@ margin:0px;
     margin: 5vw 5vw 0vw 5vw;
 }
 
+#sliderBackgroundCanvas{
+    position: absolute;
+
+	width: 90vw;
+	height: 15px;
+    top: 0;
+    left: 0;
+    padding: 0px;
+    z-index: -1;
+    margin: 105vw 5vw 0vw 5vw;
+    
+    border-radius: 15px;
+}
+
 #lightnessValue {
-    margin: 97vw 10px 2vw 10px;
+    margin: 92vw 50px 8vw 50px;
     width: 23px;
     text-align: center;
     
@@ -61,20 +75,28 @@ margin:0px;
 }
 
 #lightnessSlider {
-    margin: 0px 0px 0px 0px;
-
+    position: absolute;
+    margin: 105vw 5vw 0vw 5vw;
+    top: 0;
+    left: 0;
+    
     -webkit-appearance: none;
 
     width: 90vw;
-    height: 10px;
-    
+    height: 15px;
 
-    border-radius:  10px;
+    border: none;
     
-    background: -webkit-linear-gradient(left, black , white); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(right, black , white); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(right, black , white); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(to right, black , white); /* Standard syntax */   
+    background-repeat: no-repeat repeat;
+    background-size: 100%;
+    background: none;
+    
+    /*
+    background: -webkit-linear-gradient(left, black , white); 
+    background: -o-linear-gradient(right, black , white);
+    background: -moz-linear-gradient(right, black , white);
+    background: linear-gradient(to right, black , white);
+    */  
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -106,7 +128,7 @@ input[type="radio"] + label span {
     display:inline-block;
     width:10vw;
     height:10vw;
-    margin:-1px 4px 0 0;
+    margin:1vw 1vw 1vw 1vw;
     vertical-align:middle;
     cursor:pointer;
     -moz-border-radius:  20%;
