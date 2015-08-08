@@ -33,9 +33,17 @@
 					<Menu>KalleWheel</Menu>
 					<Geometry>
 						<Size>
-							<Height>100</Height>
-							<Width>100</Width>
+							<Height>340</Height>
+							<Width>202</Width>
 						</Size>
+                        <MinSize>
+                            <Height>340</Height>
+                            <Width>202</Width>
+                        </MinSize>
+                        <MaxSize>
+                            <Height>715</Height>
+                            <Width>500</Width>
+                        </MaxSize>
 					</Geometry>
 				</UI>
 			</DispatchInfo>

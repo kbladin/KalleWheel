@@ -14,19 +14,28 @@
 </head>
 
 <body onLoad="onLoaded()" class="unselectable">
-      <div id="hoverDiv"></div>
-            <div id="outputMessage"></div>
-      <canvas id="wheelCanvas" width="100" height="100" ></canvas>
-      <canvas id="dotsCanvas" width="600" height="600" onmousemove="moveDots(event)" onmousedown="mouseDown(event)" onmouseup="mouseUp()" onmouseout="mouseUp()"></canvas>
-      <div id="impExpBtn">
-            <button class="impExpBtn" id="expBtn" onclick="exportForegroundColor()"></button>     
-            <button class="impExpBtn" id="impBtn" onclick="importForegroundColor()"></button>
+      <div id="outputMessage"></div>
+      
+      <div id="pickerCanvas">
+            <div id="hoverDiv" class="absolutePositionCanvas"></div>
+            <canvas id="wheelCanvas" class="absolutePositionCanvas" width="100" height="100" ></canvas>
+            <canvas id="dotsCanvas" class="absolutePositionCanvas" width="600" height="600" onmousemove="moveDots(event)" onmousedown="mouseDown(event)" onmouseup="mouseUp()" onmouseout="mouseUp()"></canvas>
       </div>
-      <button id="decreaseLightnessBtn" class="increaseDecreaseLightnessBtn" onclick="decreaseLightness()"></button>
-      <input id="lightnessValue" type="text" value="0" onkeyup="textInputValue()">
-      <button id="increaseLightnessBtn" class="increaseDecreaseLightnessBtn" onclick="increaseLightness()"></button>
-      <input id="lightnessSlider" type="range" onchange="updateColor()" onmouseup="" onmouseout="">
-      <canvas id="sliderBackgroundCanvas" width="100" height="1"></canvas>
+      <div id="firstButtonRow">
+            <div id="impExpBtn">
+                  <button class="impExpBtn" id="expBtn" onclick="exportForegroundColor()"></button>     
+                  <button class="impExpBtn" id="impBtn" onclick="importForegroundColor()"></button>
+            </div>
+            <div id="incDecrLightness">
+                  <button id="decreaseLightnessBtn" class="increaseDecreaseLightnessBtn" onclick="decreaseLightness()"></button>
+                  <input id="lightnessValue" type="text" value="0" onkeyup="textInputValue()">
+                  <button id="increaseLightnessBtn" class="increaseDecreaseLightnessBtn" onclick="increaseLightness()"></button>      
+            </div>      
+      </div>
+      <div id="slider">
+            <canvas id="sliderBackgroundCanvas" width="100" height="1"></canvas>     
+            <input id="lightnessSlider" type="range" onchange="updateColor()" onmouseup="" onmouseout="">
+      </div>
       <form id="colorButtons"></form>
       <div id="colorOptions">
             <abbr title="Toggle visibility"><input id="visibilityCheckBox" class="colorOptionsCheckbox" type="checkbox" onchange="toggleVisibility()"/><label for="visibilityCheckBox"><span/></label></abbr>

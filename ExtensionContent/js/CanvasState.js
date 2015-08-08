@@ -35,7 +35,7 @@ ColorGlyph.prototype.setColor = function(r, g, b) {
     if (norm > 1) {
         this.x = this.x / norm;
         this.y = this.y / norm;
-        alert("Warning: Color normalized!");
+        //alert("Warning: Color normalized!");
     }
 };
 
@@ -49,7 +49,7 @@ ColorGlyph.prototype.setColorLCH = function(l, c, h) {
     if (norm > 1) {
         this.x = this.x / norm;
         this.y = this.y / norm;
-        alert("Warning: Color normalized!");
+        //alert("Warning: Color normalized!");
     }
 };
 

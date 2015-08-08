@@ -1,4 +1,5 @@
 // http://www.davidebarranca.com/2015/06/html-panel-tips-17-cc2015-survival-guide/
+// http://aphall.com/2014/08/cep-mega-guide-en/
 
 function updateLightnessValue() {
       document.getElementById("lightnessValue").value = document.getElementById("lightnessSlider").value;
