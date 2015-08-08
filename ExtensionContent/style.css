@@ -1,7 +1,11 @@
+/*Hide scrollbar*/
+::-webkit-scrollbar { 
+    display: none; 
+}
 
 body {
 text-align:center;
-margin: 5vw;
+margin: 0;
 }
 
 button, select, input
@@ -30,6 +34,28 @@ padding:0px;
 margin:0px;
 }
 
+#outputMessage{
+    font-family:sans-serif;
+    font-weight:700;
+    color: red;
+    margin: auto;
+    /*position: absolute;
+    top: 30vw; left: 0; bottom: 0; right: 0;
+    z-index: 1;
+    */
+
+    -webkit-transition: all 1s linear; 
+    transition: all 1s linear;
+}
+
+#hoverDiv{
+	width: 90vw;
+	height: 90vw;
+    top: 0;
+    left: 0;
+    margin: 5vw 5vw 0vw 5vw; 
+}
+
 #wheelCanvas{
     position: absolute;
 	width: 90vw;
@@ -48,22 +74,53 @@ margin:0px;
     margin: 5vw 5vw 0vw 5vw;
 }
 
-#sliderBackgroundCanvas{
+#impExpBtn {
     position: absolute;
+    margin: 2vw 2vw 2vw 5vw;
+}
 
-	width: 90vw;
-	height: 15px;
-    top: 0;
-    left: 0;
-    padding: 0px;
-    z-index: -1;
-    margin: 105vw 5vw 0vw 5vw;
-    
-    border-radius: 15px;
+.impExpBtn {
+    width: 25px;
+    height:25px;
+    padding: 3px;
+    vertical-align:middle;
+    background-size: 80%;
+    background-position:center center;
+    background-repeat: no-repeat;
+}
+
+#impBtn {
+    background-image: url(images/icons/import-color.svg);
+}
+
+#expBtn {
+    background-image: url(images/icons/export-color.svg);
+}
+
+.increaseDecreaseLightnessBtn {
+    width: 10px;
+    height:15px;
+    vertical-align:middle;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+#increaseLightnessBtn {
+    background-image: url(images/icons/back-arrow3.svg);
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+}
+
+#decreaseLightnessBtn {
+    background-image: url(images/icons/back-arrow3.svg);
 }
 
 #lightnessValue {
-    margin: 92vw 50px 8vw 50px;
+    margin: 2vw 0px 2vw 0px;
     width: 23px;
     text-align: center;
     
@@ -74,10 +131,23 @@ margin:0px;
     border-radius:  20%;
 }
 
+#sliderBackgroundCanvas{
+    position: absolute;
+	top: 110vw;
+    left: 0;
+    width: 90vw;
+	height: 15px;
+    padding: 0px;
+    z-index: -1;
+    margin: 0vw 5vw 0vw 5vw;
+    
+    border-radius: 15px;
+}
+
 #lightnessSlider {
     position: absolute;
-    margin: 105vw 5vw 0vw 5vw;
-    top: 0;
+    margin: 0px 5vw 0vw 5vw;
+    top: 110vw;
     left: 0;
     
     -webkit-appearance: none;
@@ -110,6 +180,14 @@ input[type="range"]::-webkit-slider-thumb {
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
+  -khtml-user-select: none; /* webkit browsers */
+}
+
+#colorButtons {
+    position: relative;
+    top: 0px;
+    width: 90vw;
+    margin: 11vw 5vw 0 5vw;
 }
 
 /*RADIO BUTTON*/
@@ -126,34 +204,31 @@ input[type="radio"] + label {
 
 input[type="radio"] + label span {
     display:inline-block;
-    width:10vw;
-    height:10vw;
+    width:13vw;
+    height:13vw;
     margin:1vw 1vw 1vw 1vw;
     vertical-align:middle;
     cursor:pointer;
-    -moz-border-radius:  20%;
     border-radius:  20%;
-}
-
-input[type="radio"] + label span {
-     background-color: black;
-         border: 2px solid black;
+    background-color: black;
+    background-repeat: no-repeat;
+    background-position: top right;
+    background-size: 50%;
 }
 
 input[type="radio"]:checked + label span{
-    border: 2px solid white;
+    box-shadow: 0 0 0 3px white;
 }
 
 input[type="radio"] + label span,
 input[type="radio"]:checked + label span {
-  -webkit-transition:border-color 0.2s linear;
-  -o-transition:border-color 0.2s linear;
-  -moz-transition:border-color 0.2s linear;
-  transition:border-color 0.2s linear;
+  -webkit-transition: box-shadow 0.2s ease-out; 
+  transition: box-shadow 0.2s ease-out;
 }
 
 #colorOptions {
-
+    position: relative;
+    top: 0px;
 }
 
 /*CHECK BOX, Icons made by Freepik from www.flaticon.com */
@@ -164,60 +239,93 @@ input[type="radio"]:checked + label span {
 
 .colorOptionsCheckbox + label span {
     display:inline-block;
-    width:15px;
-    height:15px;
+    width:18px;
+    height:18px;
     background: url(images/icons/unlocked44.svg);
-    background-size: 15px 15px;
+    background-size: 80% 80%;
+    background-repeat: no-repeat;
+    background-position: top right;
     
     margin:4px 2px 4px 2px;
     vertical-align:middle;
     cursor:pointer;
-    -moz-border-radius:  20%;
-    border-radius:  20%;
-}
-
-.colorOptionsCheckbox + label span {
-    border: 2px solid black;
+    border-radius:  50%;
+    
+    -webkit-transition: box-shadow 0.2s ease-out; 
+    transition: box-shadow 0.2s ease-out;
+    
+    box-shadow: 0 0 0 0 transparent;
 }
 
 .colorOptionsCheckbox:checked + label span{
     background: url(images/icons/locked59.svg);
-    background-size: 15px 15px;
+    box-shadow: 0 0 0 3px white;
+}
+
+/* Visibility Checkbox */
+#visibilityCheckBox + label span {
+    background: url(images/icons/invisible3.svg);
     background-color: gray;
+    background-size: 80% 80%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#visibilityCheckBox:checked + label span{
+    background: url(images/icons/visible9.svg);
+    background-color: gray;
+    background-size: 80% 80%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 /* Tracelines Checkbox */
 #traceLinesCheckBox + label span {
     background: url(images/icons/right218.svg);
-    background-size: 15px 15px;
+    background-color: gray;
+    background-size: 80% 80%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 #traceLinesCheckBox:checked + label span{
     background: url(images/icons/right218.svg);
-    background-size: 15px 15px;
     background-color: gray;
+    background-size: 80% 80%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 /* Lightsource Checkbox */
 #lightSourceCheckBox + label span {
     background: url(images/icons/idea14.svg);
-    background-size: 15px 15px;
+    background-color: gray;
+    background-size: 80% 80%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 #lightSourceCheckBox:checked + label span{
     background: url(images/icons/idea14.svg);
-    background-size: 15px 15px;
     background-color: gray;
+    background-size: 80% 80%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 /* Locked Checkbox */
 #lockedCheckBox + label span {
     background: url(images/icons/unlocked44.svg);
-    background-size: 15px 15px;
+    background-color: gray;
+    background-size: 80% 80%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 #lockedCheckBox:checked + label span{
     background: url(images/icons/locked59.svg);
-    background-size: 15px 15px;
     background-color: gray;
+    background-size: 80% 80%;
+    background-repeat: no-repeat;
+    background-position: center;
 }

@@ -32,7 +32,7 @@ function getForegroundColorRGB() {
              '", "g":"' + app.foregroundColor.rgb.green +
              '", "b":"' + app.foregroundColor.rgb.blue + '"}';
     var json = '[' + json + ']'; // Wrap the JSON
-    sendEvent("foo.bar", json);
+    sendEvent("colorImported", json);
 };
 
 

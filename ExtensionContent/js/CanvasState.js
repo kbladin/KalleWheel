@@ -7,7 +7,6 @@ function getSaturation01(x, y) {
 	return (Math.sqrt(Math.pow(x,2) + Math.pow(y,2)));
 };
 
-
 function ColorGlyph (x, y, index) {
     this.x = x;
     this.y = y;
@@ -15,6 +14,7 @@ function ColorGlyph (x, y, index) {
     this.locked = false;
     this.isLightSource = false;
     this.drawLightTraceLines = false;
+    this.visible = false;
     this.index = index;
 }
 
@@ -27,6 +27,20 @@ ColorGlyph.prototype.getColor = function() {
 
 ColorGlyph.prototype.setColor = function(r, g, b) {
     var LCH = chroma.rgb(r, g, b).lch();
+    this.x = LCH[1] / 100 * Math.cos(LCH[2] / 360 * (2 * Math.PI));
+    this.y = - LCH[1] / 100 * Math.sin(LCH[2] / 360 * (2 * Math.PI));
+    this.z = LCH[0];
+    
+    var norm = Math.sqrt(Math.pow(this.x,2) + Math.pow(this.y,2)) + 20/270; // 20 = bordersize hardcoded...
+    if (norm > 1) {
+        this.x = this.x / norm;
+        this.y = this.y / norm;
+        alert("Warning: Color normalized!");
+    }
+};
+
+ColorGlyph.prototype.setColorLCH = function(l, c, h) {
+    var LCH = chroma.lch(l, c, h).lch();
     this.x = LCH[1] / 100 * Math.cos(LCH[2] / 360 * (2 * Math.PI));
     this.y = - LCH[1] / 100 * Math.sin(LCH[2] / 360 * (2 * Math.PI));
     this.z = LCH[0];
@@ -80,6 +94,8 @@ CanvasState.prototype.addColorRadioButtons = function(element) {
         
         element.appendChild(label);
     }
+    document.getElementById("radio0").checked = true;
+    this.colorGlyphs[this.getActiveColorIndex()].visible = true;
 };
 
 CanvasState.prototype.drawBackground = function() {
@@ -195,7 +211,7 @@ CanvasState.prototype.drawLightTraceLines = function() {
     context.lineWidth = 2;
     
     for (var i = 0; i < this.colorGlyphs.length; i++) {
-        if (this.colorGlyphs[i].isLightSource){
+        if (this.colorGlyphs[i].isLightSource && this.colorGlyphs[i].visible){
             context.beginPath();
             context.moveTo(centerX, centerY);
             context.lineTo((this.colorGlyphs[i].x + 1) * radius,(this.colorGlyphs[i].y + 1) * radius);
@@ -221,7 +237,7 @@ CanvasState.prototype.drawExternalLightTraceLines = function() {
     context.lineWidth = 2;
     
     for (var i = 0; i < this.colorGlyphs.length; i++) {
-        if (this.colorGlyphs[i].drawLightTraceLines){
+        if (this.colorGlyphs[i].drawLightTraceLines && this.colorGlyphs[i].visible){
             for (var j = 0; j < this.colorGlyphs.length; j++) {
                 if (this.colorGlyphs[j].isLightSource){
                     context.beginPath();
@@ -270,39 +286,48 @@ CanvasState.prototype.drawColorGlyphs = function() {
     
     var activeColor = this.getActiveColorIndex();    
     for (var i = 0; i < this.colorGlyphs.length; i++) {
-        var dotSize;
-        if (i == activeColor){
-            context.lineWidth = 5;
-            dotSize = 10;
-        }
-        else{
-            context.lineWidth = 2;
-            dotSize = 7;
-        }
         var color = this.colorGlyphs[i].getColor();
-        context.fillStyle = color.hex();
-        context.strokeStyle = borderColor;
-        
-        if (!this.colorGlyphs[i].locked) {
-            context.beginPath();
-            context.arc((this.colorGlyphs[i].x + 1) * radius,(this.colorGlyphs[i].y + 1) * radius, dotSize, 0, 2 * Math.PI, false);
-            context.fill();
-            context.stroke();
-        } else {
-            var xPos = (this.colorGlyphs[i].x + 1) * radius;
-            var yPos = (this.colorGlyphs[i].y + 1) * radius;
-            context.beginPath();
-            context.moveTo(xPos - dotSize, yPos - dotSize);
-            context.lineTo(xPos + dotSize, yPos - dotSize);
-            context.lineTo(xPos + dotSize, yPos + dotSize);
-            context.lineTo(xPos - dotSize, yPos + dotSize);
-            context.closePath();
-            context.fill();
-            context.stroke();
+        if (this.colorGlyphs[i].visible) {
+            var dotSize;
+            if (i == activeColor){
+                context.lineWidth = 5;
+                dotSize = 10;
+            }
+            else{
+                context.lineWidth = 2;
+                dotSize = 7;
+            }
+            
+            context.fillStyle = color.hex();
+            context.strokeStyle = borderColor;
+            
+            if (!this.colorGlyphs[i].locked) {
+                context.beginPath();
+                context.arc((this.colorGlyphs[i].x + 1) * radius,(this.colorGlyphs[i].y + 1) * radius, dotSize, 0, 2 * Math.PI, false);
+                context.fill();
+                context.stroke();
+            } else {
+                var xPos = (this.colorGlyphs[i].x + 1) * radius;
+                var yPos = (this.colorGlyphs[i].y + 1) * radius;
+                context.beginPath();
+                context.moveTo(xPos - dotSize, yPos - dotSize);
+                context.lineTo(xPos + dotSize, yPos - dotSize);
+                context.lineTo(xPos + dotSize, yPos + dotSize);
+                context.lineTo(xPos - dotSize, yPos + dotSize);
+                context.closePath();
+                context.fill();
+                context.stroke();
+            }
+            // Change color of the selected radio button (could be done after the loop on only one)
+            var span = document.getElementById("radio" + i).nextSibling.firstChild;
+            span.style.backgroundColor = color.hex();
+            span.style.backgroundImage = "none";
         }
-        // Change color of the selected radio button (could be done after the loop on only one)
-        var span = document.getElementById("radio" + i).nextSibling.firstChild;
-        span.style.backgroundColor = color.hex();
+        else {
+            var span = document.getElementById("radio" + i).nextSibling.firstChild;
+            span.style.backgroundColor = color.hex();
+            span.style.backgroundImage = "url('images/icons/invisible3.svg')";
+        }
     }
 };
 
@@ -355,12 +380,14 @@ CanvasState.prototype.updateSelectedIndex = function(x, y, offset) {
     var index = -1;
     var minDist = 1;
     for (var i = 0; i < this.colorGlyphs.length; i++) {
-        var dotX = this.colorGlyphs[i].x;
-        var dotY = this.colorGlyphs[i].y;
-        var dist = Math.sqrt(Math.pow(x - dotX,2) + Math.pow(y - dotY,2));
-        if (dist < minDist && dist < offset) {
-            minDist = dist;
-            index = i;
+        if (this.colorGlyphs[i].visible) {
+            var dotX = this.colorGlyphs[i].x;
+            var dotY = this.colorGlyphs[i].y;
+            var dist = Math.sqrt(Math.pow(x - dotX,2) + Math.pow(y - dotY,2));
+            if (dist < minDist && dist < offset) {
+                minDist = dist;
+                index = i;
+            }
         }
     }
     this.selectedIndex = index;
@@ -373,11 +400,13 @@ CanvasState.prototype.updateSelectedIndex = function(x, y, offset) {
 
 CanvasState.prototype.positionOverDots = function(x, y, offset) {
     for (var i = 0; i < this.colorGlyphs.length; i++) {
-        var dotX = this.colorGlyphs[i].x;
-        var dotY = this.colorGlyphs[i].y;
-        var dist = Math.sqrt(Math.pow(x - dotX,2) + Math.pow(y - dotY,2));
-        if (dist < offset) {
-            return true;
+        if (this.colorGlyphs[i].visible) {
+            var dotX = this.colorGlyphs[i].x;
+            var dotY = this.colorGlyphs[i].y;
+            var dist = Math.sqrt(Math.pow(x - dotX,2) + Math.pow(y - dotY,2));
+            if (dist < offset) {
+                return true;
+            }
         }
     }
 };

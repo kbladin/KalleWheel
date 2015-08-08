@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with DrawBerry (http://raphaelbost.free.fr/) -->
+<svg 
+ 	 width = "165.000000" 
+ 	 height = "123.000000" 
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:cc="http://web.resource.org/cc/"
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:svg="http://www.w3.org/2000/svg"
+ xmlns="http://www.w3.org/2000/svg" 
+ xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
+ xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+ >
+<g inkscape:label="Background" inkscape:groupmode="layer" id="Background">
+<path  style="fill:#ffffff;fill-opacity:1.000000;stroke:#ffffff;stroke-width:20.000000px;stroke-opacity:1.000000;stroke-linecap:butt;stroke-linejoin:miter;" 
+ d="M 59.785156,17.610931 L 122.945312,17.610931 L 122.945312,81.610542 L 59.785156,81.610542 L 59.785156,17.610931  z"  />
+<path  style="fill:#ffffff;fill-opacity:1.000000;stroke:#ffffff;stroke-width:20.000000px;stroke-opacity:1.000000;stroke-linecap:butt;stroke-linejoin:miter;" 
+ d="M 88.585159,46.410927 L 151.745300,46.410927 L 151.745300,110.410545 L 88.585159,110.410545 L 88.585159,46.410927  z"  />
+<path  style="fill:#ffffff;fill-opacity:1.000000;stroke:#000000;stroke-width:8.000000px;stroke-opacity:1.000000;stroke-linecap:butt;stroke-linejoin:miter;" 
+ d="M 88.585159,46.410934 L 151.745300,46.410934 L 151.745300,110.410545 L 88.585159,110.410545 L 88.585159,46.410934  z"  />
+<path  style="fill:#bababa;fill-opacity:1.000000;stroke:#000000;stroke-width:8.396810px;stroke-opacity:1.000000;stroke-linecap:butt;stroke-linejoin:miter;" 
+ d="M 59.785156,17.610939 L 122.945312,17.610939 L 122.945312,81.610550 L 59.785156,81.610550 L 59.785156,17.610939  z"  />
+<path  style="fill:#000000;fill-opacity:1.000000;stroke:#000000;stroke-width:1.000000px;stroke-opacity:1.000000;stroke-linecap:butt;stroke-linejoin:miter;" 
+ d="M 45.742981,32.685772 L 29.623228,32.685772 L 29.623228,4.223232 L 5.445312,46.916992 L 29.623228,89.610947 L 29.623228,61.148270 L 45.742981,61.148270 L 45.742981,32.685772 "  />
+</g>
+</svg>

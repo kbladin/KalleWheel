@@ -1,7 +1,7 @@
 <!doctype html>
 
 <html>
-      
+
 <head>
       <meta charset="utf-8">
       <script src="./js/ext.js"></script>
@@ -13,15 +13,23 @@
       <title>KalleWheel</title>
 </head>
 
-<body onLoad="onLoaded()" onmouseover="importForegroundColor()" onmouseout="exportForegroundColor()">
-      
-      <canvas id="wheelCanvas" width="100" height="100" class="unselectable"></canvas>
-      <canvas id="dotsCanvas" width="600" height="600" class="unselectable" onmousemove="moveDots(event)" onmousedown="mouseDown(event)" onmouseup="mouseUp()" onmouseout="mouseUp()"></canvas>
+<body onLoad="onLoaded()" class="unselectable">
+      <div id="hoverDiv"></div>
+            <div id="outputMessage"></div>
+      <canvas id="wheelCanvas" width="100" height="100" ></canvas>
+      <canvas id="dotsCanvas" width="600" height="600" onmousemove="moveDots(event)" onmousedown="mouseDown(event)" onmouseup="mouseUp()" onmouseout="mouseUp()"></canvas>
+      <div id="impExpBtn">
+            <button class="impExpBtn" id="expBtn" onclick="exportForegroundColor()"></button>     
+            <button class="impExpBtn" id="impBtn" onclick="importForegroundColor()"></button>
+      </div>
+      <button id="decreaseLightnessBtn" class="increaseDecreaseLightnessBtn" onclick="decreaseLightness()"></button>
       <input id="lightnessValue" type="text" value="0" onkeyup="textInputValue()">
-      <input id="lightnessSlider" type="range" class="unselectable" onchange="updateColor()" onmouseup="" onmouseout="">
-      <canvas id="sliderBackgroundCanvas" width="100" height="1" class="unselectable"></canvas>
-      <form id="colorButtons" class="unselectable"></form>
+      <button id="increaseLightnessBtn" class="increaseDecreaseLightnessBtn" onclick="increaseLightness()"></button>
+      <input id="lightnessSlider" type="range" onchange="updateColor()" onmouseup="" onmouseout="">
+      <canvas id="sliderBackgroundCanvas" width="100" height="1"></canvas>
+      <form id="colorButtons"></form>
       <div id="colorOptions">
+            <abbr title="Toggle visibility"><input id="visibilityCheckBox" class="colorOptionsCheckbox" type="checkbox" onchange="toggleVisibility()"/><label for="visibilityCheckBox"><span/></label></abbr>
             <abbr title="Toggle trace lines (towards lightsources)"><input id="traceLinesCheckBox" class="colorOptionsCheckbox" type="checkbox" onchange="toggleDrawTraceLines()"/><label for="traceLinesCheckBox"><span/></label></abbr>
             <abbr title="Toggle light source"><input id="lightSourceCheckBox" class="colorOptionsCheckbox" type="checkbox" onchange="toggleLightSource()"/><label for="lightSourceCheckBox"><span/></label></abbr>
             <abbr title="Toggle lock"><input id="lockedCheckBox" class="colorOptionsCheckbox" type="checkbox" onchange="toggleLock()"/><label for="lockedCheckBox"><span/></label></abbr>
