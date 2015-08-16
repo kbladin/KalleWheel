@@ -4,34 +4,34 @@
 }
 
 body {
-text-align:center;
-margin: 0;
+    text-align:center;
+    margin: 0;
 }
 
 button, select, input
 {
-border:1px solid;
-height:19px;
+    border:1px solid;
+    height:19px;
 }
 
 input[type=text]
 {
-height:16px;
+    height:16px;
 }
 
 #content {
-margin-right:auto;
-margin-left:auto;
-vertical-align:middle;
-width:100%;
+    margin-right:auto;
+    margin-left:auto;
+    vertical-align:middle;
+    width:100%;
 }
 
 #content ul {
-padding:0px;
+    padding:0px;
 }
 
 #content ul li {
-margin:0px;
+    margin:0px;
 }
 
 #outputMessage{
@@ -43,7 +43,6 @@ margin:0px;
     top: 30vw; left: 0; bottom: 0; right: 0;
     z-index: 1;
     */
-
     -webkit-transition: all 1s linear; 
     transition: all 1s linear;
 }
@@ -78,19 +77,23 @@ margin:0px;
 .impExpBtn {
     width: 25px;
     height:25px;
-    padding: 3px;
-    vertical-align:middle;
-    background-size: 80%;
+    /*
+    background-size: 50%;
     background-position:center center;
     background-repeat: no-repeat;
+    */
 }
 
 #impBtn {
-    background-image: url(images/icons/import-color.svg);
+    background: url(images/icons/import-color.svg) no-repeat center center;
+    background-size: 90%;
+    cursor: pointer;
 }
 
 #expBtn {
-    background-image: url(images/icons/export-color.svg);
+    background: url(images/icons/export-color.svg) no-repeat center center;
+    background-size: 90%;
+    cursor: pointer;
 }
 
 #incDecrLightness{
@@ -103,12 +106,16 @@ margin:0px;
     width: 10px;
     height:15px;
     vertical-align:middle;
+    /*
     background-size: 100%;
     background-repeat: no-repeat;
+    */
+    cursor: pointer;
 }
 
 #increaseLightnessBtn {
-    background-image: url(images/icons/back-arrow3.svg);
+    background: url(images/icons/back-arrow3.svg) no-repeat center center;
+    background-size: 100%;
     -moz-transform: scaleX(-1);
     -o-transform: scaleX(-1);
     -webkit-transform: scaleX(-1);
@@ -118,7 +125,8 @@ margin:0px;
 }
 
 #decreaseLightnessBtn {
-    background-image: url(images/icons/back-arrow3.svg);
+    background: url(images/icons/back-arrow3.svg) no-repeat center center;
+    background-size: 100%;
 }
 
 #lightnessValue {
@@ -172,9 +180,14 @@ margin:0px;
 }
 
 input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: default-button;
-    width: 5px;
-    height: 5px;
+    -webkit-appearance: none;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    background: none;
+    border-color: white;
+    border-style: solid;
+    border-width: 3px;
     cursor: pointer;
 }
 

@@ -272,7 +272,7 @@ CanvasState.prototype.drawColorGlyphs = function() {
     
     var lineWidth = this.borderSize;
     var borderColor;
-    if (this.colorGlyphs[this.getActiveColorIndex()].z >= 50)
+    if (this.colorGlyphs[this.getActiveColorIndex()].z >= 50) 
         borderColor = '#000000';
     else
         borderColor = '#FFFFFF';
@@ -281,7 +281,7 @@ CanvasState.prototype.drawColorGlyphs = function() {
     context.beginPath();
     context.arc(centerX, centerY, radius - lineWidth/2, 0, 2 * Math.PI, false);
     context.lineWidth = lineWidth;
-    context.strokeStyle = '#444444';
+    context.strokeStyle = '#858585';
     context.stroke();
     
     var activeColor = this.getActiveColorIndex();    
@@ -385,8 +385,12 @@ CanvasState.prototype.updateSelectedIndex = function(x, y, offset) {
             var dotY = this.colorGlyphs[i].y;
             var dist = Math.sqrt(Math.pow(x - dotX,2) + Math.pow(y - dotY,2));
             if (dist < minDist && dist < offset) {
-                minDist = dist;
-                index = i;
+                // Only pick the ones that are not locked unless there is only
+                // locked ones to pick from.
+                if (!this.colorGlyphs[i].locked || index == -1) {
+                    minDist = dist;
+                    index = i;
+                }
             }
         }
     }
