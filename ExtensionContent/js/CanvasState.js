@@ -314,7 +314,9 @@ CanvasState.prototype.drawColorGlyphs = function() {
                 context.lineTo(xPos + dotSize, yPos - dotSize);
                 context.lineTo(xPos + dotSize, yPos + dotSize);
                 context.lineTo(xPos - dotSize, yPos + dotSize);
-                context.closePath();
+                context.lineTo(xPos - dotSize, yPos - dotSize); // Last two wraps around
+                context.lineTo(xPos + dotSize, yPos - dotSize); // Last two wraps around
+                //context.closePath(); // closePath() somehow makes the fill not work
                 context.fill();
                 context.stroke();
             }
@@ -384,13 +386,13 @@ CanvasState.prototype.updateSelectedIndex = function(x, y, offset) {
             var dotX = this.colorGlyphs[i].x;
             var dotY = this.colorGlyphs[i].y;
             var dist = Math.sqrt(Math.pow(x - dotX,2) + Math.pow(y - dotY,2));
-            if (dist < minDist && dist < offset) {
-                // Only pick the ones that are not locked unless there is only
-                // locked ones to pick from.
+            if (dist <= minDist && dist <= offset) {
+                // Do not pick the locked ones unless there are only locked
+                // ones to pick.
                 if (!this.colorGlyphs[i].locked || index == -1) {
                     minDist = dist;
                     index = i;
-                }
+                }                
             }
         }
     }

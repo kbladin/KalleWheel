@@ -1,8 +1,7 @@
 # KalleWheel
 A custom color wheel extension for Adobe Photoshop.
-Using CEP to create a color wheel with HTML, JavaScript and CSS.
 
-KalleWheel is an extension currently at the experiment state that is
+KalleWheel is an extension currently that is
 made to make it easier for digital painters to choose colors in
 Photoshop.
 
@@ -16,7 +15,7 @@ Icons made by Freepik from [www.flaticon.com](www.flaticon.com/)
 
 A color choosen KalleWheel is defined by the three components Hue (set by the angle from the center of the wheel), Chroma (similar to saturation, determined by the distance from the center of the wheel), and Lightness (set by the slider).
 
-The HCL color space is directly derived from the CIELab color space which is made to reduce the interference our human perception have with the colors percieved. Comparing to the most common color space used by digital artists (HSB: Hue, Saturation, Brightness) a certain lightness will be percieved equally light (almost) independent on the other two light components. An example of this is when comparing a yellow color to a blue color. Even though the brightness (in HSB color space) is equal, the yellow color will seem brighter due to the way we percieve the colors. In CIELab color space however, a yellow color with a certain lightness will seem roughly as light as a blue color with the same lightness.
+The HCL color space is directly derived from the CIELab color space which is made to reduce the interference our human perception have with the colors percieved. Comparing to the most common color space used by digital artists (HSB: Hue, Saturation, Brightness) a certain lightness will be percieved equally light (almost) independent on the other two light components. An example of this is when comparing a yellow color to a blue color. Even though the brightness (in HSB color space) is equal, the yellow color will seem brighter due to the pixel intensities of a screen as well as the way we percieve the colors. In CIELab color space however, a yellow color with a certain lightness will seem roughly as light as a blue color with the same lightness.
 
 ![](doc_images/random_colors.png "Comparing random colors of same lightness")
 
@@ -63,7 +62,7 @@ Here I list some more differences between KalleWheel and Adobe Color-themes, con
 
 * Photoshop's internal colors are saved in the RGB format. This sometimes leads to problems due to some color ambiguity that is appearent between RGB and CIELab. Some different CIELab color coordinates yealds the same RGB color coordinates (this happens mostly with high Chroma colors since the RGB color space is just a sub space of the CIELab space).
 
-* I have only been able to test this extension on one computer with one OS in Photoshop CC14 and CC15. I would like to see how it works on other operating systems and other versions of Photoshop but so far it has not been possible to do this.
+* I have only been able to test this extension on one computer with one OS in Photoshop CC14 and CC15. I would like to see how it works on other operating systems and other versions of Photoshop but so far it has not been possible to do this. Hopefully it will be available on Adobes Add on page for anyone to download nad install.
 
 ### Things I would like to add
 
