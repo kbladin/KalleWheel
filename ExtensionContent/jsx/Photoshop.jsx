@@ -28,10 +28,10 @@ function setForegroundColorRGB(r, g, b) {
 };
 
 function getForegroundColorRGB() {
-    var json = '{"r":"' + app.foregroundColor.rgb.red +
-             '", "g":"' + app.foregroundColor.rgb.green +
-             '", "b":"' + app.foregroundColor.rgb.blue + '"}';
-    var json = '[' + json + ']'; // Wrap the JSON
+    var json = "{\"r\":\"" + app.foregroundColor.rgb.red +
+             "\", \"g\":\"" + app.foregroundColor.rgb.green +
+             "\", \"b\":\"" + app.foregroundColor.rgb.blue + "\"}";
+    json = '/*' + json + '*/'; // Wrap the JSON
     sendEvent("colorImported", json);
 };
 
