@@ -75,8 +75,9 @@ function importForegroundColor() {
 }
 
 function importForegroundColorEvent(e) {
-      var str = e.data;
-      str = str.substring(1, str.length - 1); // Remove wrapping [ ] from json
+      var str = e.data.toString();
+      str = str.substring(2, str.length - 2); // Remove comment wrapping from json
+            
       var RGB = JSON.parse(str);
       
       if (!cs.colorGlyphs[cs.getActiveColorIndex()].locked) {
