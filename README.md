@@ -5,6 +5,8 @@ KalleWheel is an extension currently that is
 made to make it easier for digital painters to choose colors in
 Photoshop.
 
+Download and install the extension on the Adobe Add-ons page: https://creative.adobe.com/addons/products/12907#.WI59cLFiRE4
+
 Icons made by Freepik from [www.flaticon.com](www.flaticon.com/)
 
 ![](doc_images/kallewheel_1.png "KalleWheel")
