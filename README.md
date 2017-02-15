@@ -1,7 +1,7 @@
 # KalleWheel
 A custom color wheel extension for Adobe Photoshop.
 
-KalleWheel is an extension currently that is
+KalleWheel is an extension that is
 made to make it easier for digital painters to choose colors in
 Photoshop.
 
