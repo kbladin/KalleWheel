@@ -226,8 +226,8 @@ input[type="radio"] + label span {
     cursor:pointer;
     border-radius:  20%;
     background-color: black;
-    background-repeat: no-repeat;
-    background-position: top right;
+    /*background-repeat: no-repeat;*/
+    /*background-position: top right;*/
     background-size: 50%;
 }
 

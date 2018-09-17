@@ -39,6 +39,20 @@ ColorGlyph.prototype.setColor = function(r, g, b) {
     }
 };
 
+ColorGlyph.prototype.setColorLAB = function(l, a, b) {
+    var LCH = chroma.lab(l, a, b).lch();
+    this.x = LCH[1] / 100 * Math.cos(LCH[2] / 360 * (2 * Math.PI));
+    this.y = - LCH[1] / 100 * Math.sin(LCH[2] / 360 * (2 * Math.PI));
+    this.z = LCH[0];
+    
+    var norm = Math.sqrt(Math.pow(this.x,2) + Math.pow(this.y,2)) + 20/270; // 20 = bordersize hardcoded...
+    if (norm > 1) {
+        this.x = this.x / norm;
+        this.y = this.y / norm;
+        //alert("Warning: Color normalized!");
+    }
+};
+
 ColorGlyph.prototype.setColorLCH = function(l, c, h) {
     var LCH = chroma.lch(l, c, h).lch();
     this.x = LCH[1] / 100 * Math.cos(LCH[2] / 360 * (2 * Math.PI));
@@ -60,6 +74,7 @@ function CanvasState(background, foreground, sliderBackground) {
     this.colorGlyphs = [];
     this.borderSize = 20;
     this.mouseDown = false;
+    this.mouseOver = false;
     this.selectedIndex = -1; // Only the clicked index
     
     //fixes a problem where double clicking causes text to get selected on the canvas
@@ -181,7 +196,7 @@ CanvasState.prototype.drawCross = function(x,y) {
     else
         paintColor = '#FFFFFF';
     context.strokeStyle = paintColor;
-    context.lineWidth = 2;
+    context.lineWidth = 4;
     
     context.beginPath();
     context.moveTo(-crossSize + (x + 1) * radius,-crossSize + (y + 1) * radius);
@@ -327,8 +342,16 @@ CanvasState.prototype.drawColorGlyphs = function() {
         }
         else {
             var span = document.getElementById("radio" + i).nextSibling.firstChild;
-            span.style.backgroundColor = color.hex();
-            span.style.backgroundImage = "url('images/icons/invisible3.svg')";
+            //span.style.backgroundColor = color.hex();
+            //span.style.backgroundImage = "none";// "url('images/icons/invisible3.svg')";
+            var color2 = color;
+            lab = color2.lab(); 
+            lab[0] -= 15;
+            color2 = chroma.lab(lab[0], lab[1], lab[2]);
+            span.style.backgroundImage = "radial-gradient(" + color.hex() + " 50%, " + color2.hex() + " 50%)";
+            
+            span.style.backgroundSize = "4px 4px";
+            
         }
     }
 };
@@ -379,6 +402,8 @@ CanvasState.prototype.moveDots = function(e) {
 };
 
 CanvasState.prototype.updateSelectedIndex = function(x, y, offset) {
+    this.selectedIndex = 0;
+    return;
     var index = -1;
     var minDist = 1;
     for (var i = 0; i < this.colorGlyphs.length; i++) {

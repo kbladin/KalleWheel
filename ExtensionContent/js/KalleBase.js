@@ -3,6 +3,7 @@
 
 function updateLightnessValue() {
       document.getElementById("lightnessValue").value = document.getElementById("lightnessSlider").value;
+      colorDirty = true;
 }
 
 function outputMessage(msg) {
@@ -26,9 +27,11 @@ function increaseLightness() {
             l = Math.floor(Math.round(l) / 10) * 10 + 10;
             l = Math.min(Math.max(l,0),100);
             cs.colorGlyphs[cs.getActiveColorIndex()].z = l;
+
+            updateGUIElements();
+            drawCanvas();
+            exportForegroundColor();
       }
-      updateGUIElements();
-      drawCanvas();
 }
 
 function decreaseLightness() {
@@ -37,9 +40,11 @@ function decreaseLightness() {
             l = Math.ceil(Math.round(l) / 10) * 10 - 10;
             l = Math.min(Math.max(l,0),100);
             cs.colorGlyphs[cs.getActiveColorIndex()].z = l;
+
+            updateGUIElements();
+            drawCanvas();
+            exportForegroundColor();
       }
-      updateGUIElements();
-      drawCanvas();
 }
 
 function textInputValue() {
@@ -61,35 +66,53 @@ function radioButtonChanged() {
       cs.colorGlyphs[cs.getActiveColorIndex()].visible = true;
       drawCanvas();
       updateGUIElements();
+      cs.selectedIndex = cs.getActiveColorIndex();
+      exportForegroundColor();
 }
 
 function exportForegroundColor() {
-      var RGB = cs.colorGlyphs[cs.getActiveColorIndex()].getColor().rgb();
-      var js = "setForegroundColorRGB(" + RGB[0] + "," + RGB[1] + "," + RGB[2] + ");";
+      //nowExportingColor = true;
+      var LAB = cs.colorGlyphs[cs.getActiveColorIndex()].getColor().lab();
+      var js = "setForegroundColorLAB(" + LAB[0] + "," + LAB[1] + "," + LAB[2] + ");";
       csi.evalScript(js);
+      colorDirty = false;
+
+      //var RGB = cs.colorGlyphs[cs.getActiveColorIndex()].getColor().rgb();
+      //var js = "setForegroundColorRGB(" + RGB[0] + "," + RGB[1] + "," + RGB[2] + ");";
+      //csi.evalScript(js);
 }
 
 function importForegroundColor() {
-      var js = "getForegroundColorRGB();";
+      var js = "getForegroundColorLAB();";
       csi.evalScript(js);
+      //var js = "getForegroundColorRGB();";
+      //csi.evalScript(js);
 }
 
 function importForegroundColorEvent(e) {
       var str = e.data.toString();
       str = str.substring(2, str.length - 2); // Remove comment wrapping from json
             
-      var RGB = JSON.parse(str);
+      var LAB = JSON.parse(str);
       
       if (!cs.colorGlyphs[cs.getActiveColorIndex()].locked) {
-            cs.colorGlyphs[cs.getActiveColorIndex()].setColor(+RGB.r, +RGB.g, +RGB.b);
+            cs.colorGlyphs[cs.getActiveColorIndex()].setColorLAB(+LAB.l, +LAB.a, +LAB.b);
       }
       updateGUIElements();
       drawCanvas();
 }
 
+function importForegroundColorPsEvent(event) {
+      if (!cs.mouseOver) {
+            //alert("importForegroundColorPsEvent event called" + event.data)
+            importForegroundColor();
+      }
+      //nowExportingColor = false;
+}
+
 function mouseDown(e) {
       var mouse = cs.getMouse(e);
-      cs.updateSelectedIndex(mouse.x, mouse.y, 0.1);
+      //cs.updateSelectedIndex(mouse.x, mouse.y, 0.1);
       cs.mouseDown = true;
       moveDots(e);
       drawCanvas();      
@@ -97,7 +120,17 @@ function mouseDown(e) {
 
 function mouseUp(e) {
       cs.mouseDown = false;
-      //exportForegroundColor();
+      if (colorDirty) {
+            exportForegroundColor();
+      }
+}
+
+function mouseEnter(e) {
+      cs.mouseOver = true;
+}
+
+function mouseExit(e) {
+      cs.mouseOver = false;
 }
 
 function redrawForeground() {
@@ -115,6 +148,7 @@ function drawCanvas() {
 }
 
 function moveDots(e) {
+      /*
       var mouse = cs.getMouse(e);
       if (cs.positionOverDots(mouse.x, mouse.y, 0.1)) {
             cs.foreground.style.cursor="crosshair";
@@ -122,17 +156,19 @@ function moveDots(e) {
       else {
             cs.foreground.style.cursor="default";
       }
-      
+      */
+      cs.foreground.style.cursor="cell";
 
       if (cs.mouseDown) {
             if (!cs.colorGlyphs[cs.getActiveColorIndex()].locked) {
                   cs.moveDots(e);
+
+                  redrawForeground();
+                  updateSlider();
+                  updateCheckBoxes();
+                  updateColorHC();
             }
-            redrawForeground();
       }
-      updateSlider();
-      updateCheckBoxes();
-      updateColorHC(); 
 }
 
 function updateColor() {
@@ -140,6 +176,7 @@ function updateColor() {
       cs.colorGlyphs[cs.getActiveColorIndex()].z = l;
       updateLightnessValue();
       drawCanvas();
+      exportForegroundColor();
 }
 
 function updateColorHC() {
@@ -183,6 +220,27 @@ function toggleLightSource() {
       redrawForeground();
 }
 
+function registerPhotoshopEventEvent(e) {
+      var str = e.data.toString();
+      str = str.substring(2, str.length - 2); // Remove comment wrapping from json      
+      var eventData = JSON.parse(str);
+      
+      var typeIDSetd = eventData["typeID"];
+      var evalScript = eventData["evalScript"];
+      
+      var event = new CSEvent();
+      event.type = "com.adobe.PhotoshopRegisterEvent";
+      event.extensionId = "com.kalle.kallewheel";
+      event.scope = "APPLICATION";
+      event.data = typeIDSetd.toString();
+
+      function callMe() {
+            eval(evalScript);
+      }
+
+      csi.dispatchEvent(event);
+      csi.addEventListener("PhotoshopCallback", callMe);
+}
 
 var cs = new CanvasState(document.getElementById("wheelCanvas"), document.getElementById("dotsCanvas"), document.getElementById("sliderBackgroundCanvas"));
 for (var i = 0; i < 12; i++) {
@@ -190,21 +248,18 @@ for (var i = 0; i < 12; i++) {
 }
 
 cs.addColorRadioButtons(document.getElementById("colorButtons"));
-
-updateColor();
-drawCanvas();
-
+cs.selectedIndex = 0;
 var csi = new CSInterface();
 csi.addEventListener( "colorImported", importForegroundColorEvent);
+csi.addEventListener( "registerPhotoshopEvent", registerPhotoshopEventEvent);
+csi.evalScript("registerPhotoshopEvent(\"setd\", \"importForegroundColorPsEvent();\");");
+csi.addEventListener(CSInterface.THEME_COLOR_CHANGED_EVENT, onAppThemeColorChanged);
+updateThemeWithAppSkinInfo(csi.hostEnvironment.appSkinInfo);
 
+// Update color without exporting
+var l = +document.getElementById("lightnessSlider").value;
+cs.colorGlyphs[cs.getActiveColorIndex()].z = l;
+updateLightnessValue();
+drawCanvas();
 
-/*
-var event = new CSEvent("com.adobe.PhotoshopRegisterEvent", "APPLICATION");
-event.extensionId = "com.example.KalleWheel.extension1";//csi.getExtensionID();
-//event.appId = csi.getApplicationID();
-event.data = "1668247673"; //Copy event
-csi.dispatchEvent(event);
-csi.addEventListener("PhotoshopCallback", function(e) {
-		alert("event: " + e.data);
-	});
-*/
+var colorDirty = false;

@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<ExtensionManifest Version="4.0" ExtensionBundleId="com.example.KalleWheel" ExtensionBundleVersion="1.0.0"
+<ExtensionManifest Version="4.0" ExtensionBundleId="com.kalle.kallewheel" ExtensionBundleVersion="1.1.0"
 		ExtensionBundleName="KalleWheel" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<Author>
-		<![CDATA[Kalle Bladin]]>
-	</Author>	<Contact mailto="kallebladin@gmail.com">
-		<![CDATA[http://kbladin.se]]>
-	</Contact>	<Legal>
+	<Author><![CDATA[Kalle Bladin]]></Author>
+	<Contact mailto="kallebladin@gmail.com"><![CDATA[http://kbladin.se]]></Contact>
+	<Legal>
 		<![CDATA[KalleWheel is an opensource project in the form of a color picker photoshop extension.
 
-Copyright (c) 2015, Kalle Bladin
+Copyright (c) 2017, Kalle Bladin
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -39,7 +37,8 @@ chroma.js - JavaScript library for color conversions
 
 Copyright (c) 2011-2015, Gregor Aisch
 All rights reserved.]]>
-	</Legal>	<Abstract href="https://github.com/kbladin/KalleWheel/tree/master">
+	</Legal>
+	<Abstract href="http://kbladin.se/tools/kalle_wheel.php">
 		<![CDATA[A custom color wheel extension for Adobe Photoshop.
 
 KalleWheel is an extension that is made to make it easier for digital painters to choose colors in Photoshop.
@@ -49,25 +48,24 @@ Features:
 HCL (LAB) color space
 Many colors in the same picker wheel
 Light source direction indicators]]>
-	</Abstract>	<ExtensionList>
-		<Extension Id="com.example.KalleWheel.extension1" Version="1.0" />
+	</Abstract>
+	<ExtensionList>
+		<Extension Id="com.kalle.kallewheel" Version="1.1" />
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
-			<Host Name="PHXS" Version="14.0" />
-			<Host Name="PHSP" Version="14.0" />
+			<Host Name="PHXS" Version="12.0" />
+			<Host Name="PHSP" Version="12.0" />
 		</HostList>
 		<LocaleList>
 			<Locale Code="All" />
 		</LocaleList>
 		<RequiredRuntimeList>
 			<RequiredRuntime Name="CSXS" Version="4.0" />
-
 		</RequiredRuntimeList>
 	</ExecutionEnvironment>
 	<DispatchInfoList>
-		<Extension Id="com.example.KalleWheel.extension1">
-
+		<Extension Id="com.kalle.kallewheel">
 			<DispatchInfo >
 				<Resources>
 				<MainPath>./index.html</MainPath>
