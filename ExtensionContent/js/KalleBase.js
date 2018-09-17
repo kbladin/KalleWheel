@@ -230,7 +230,7 @@ function registerPhotoshopEventEvent(e) {
       
       var event = new CSEvent();
       event.type = "com.adobe.PhotoshopRegisterEvent";
-      event.extensionId = "com.kalle.kallewheel";
+      event.extensionId = "com.example.KalleWheel";
       event.scope = "APPLICATION";
       event.data = typeIDSetd.toString();
 

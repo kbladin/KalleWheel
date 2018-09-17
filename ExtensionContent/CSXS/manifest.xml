@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<ExtensionManifest Version="4.0" ExtensionBundleId="com.kalle.kallewheel" ExtensionBundleVersion="1.1.0"
+<ExtensionManifest Version="4.0" ExtensionBundleId="com.example.KalleWheel" ExtensionBundleVersion="1.1.0"
 		ExtensionBundleName="KalleWheel" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<Author><![CDATA[Kalle Bladin]]></Author>
 	<Contact mailto="kallebladin@gmail.com"><![CDATA[http://kbladin.se]]></Contact>
@@ -50,7 +50,7 @@ Many colors in the same picker wheel
 Light source direction indicators]]>
 	</Abstract>
 	<ExtensionList>
-		<Extension Id="com.kalle.kallewheel" Version="1.1" />
+		<Extension Id="com.example.KalleWheel" Version="1.1" />
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
@@ -65,7 +65,7 @@ Light source direction indicators]]>
 		</RequiredRuntimeList>
 	</ExecutionEnvironment>
 	<DispatchInfoList>
-		<Extension Id="com.kalle.kallewheel">
+		<Extension Id="com.example.KalleWheel">
 			<DispatchInfo >
 				<Resources>
 				<MainPath>./index.html</MainPath>
