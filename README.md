@@ -17,19 +17,19 @@ This installation method is for testers and developers mainly. Information taken
 
 #### Download extension
 
-Download the zxp file from the addon page, or from the release page on github, then follow the OS specific steps. To install a specific version from github, e.g. for beta testing, clone the repository and copy the KalleWheel folder. This folder should be placed in the extensions folder specified below for the given OS.
+Download the .zxp file from the addon page, or from the release page on github, then follow the OS specific steps. To install a specific version from github, e.g. for beta testing, clone the repository and copy the com.kalle.KalleWheel folder. This folder should be placed in the extensions folder specified below for the given OS.
 
 #### Manual installation on Mac OS
 
 * Rename the .zxp file to .zip.
 * Unzip the zip file. Some people report that they must use Stuffit Expander to unzip it as the OS X utility does not work for them.
-    If the extension was downloaded from github, the corresponding folder is the KalleWheel folder.
+    If the extension was downloaded from github, the corresponding folder is the com.kalle.KalleWheel folder.
 * In Finder Menu choose go->go to folder and enter the following folder name: `~/Library/Application Support/Adobe/CEP/extensions`
 * Move the folder from the previous step into this folder.
 * Open a terminal window and execute the following command: `defaults write com.adobe.CSXS.4 PlayerDebugMode 1`
     (This will tell Adobe programs to also run extensions that are installed in this manual way).
     Note, the 4 in com.adobe.CSXS.4 corresponds to the CSXS version of the program. For different versions of the software, a different number is needed. For reference to the latest version to update, all com.adobe.CSXS plist files can be found under `~/Library/Preferences/`
-* After the plist file has been updated, read the file by, in the teminal, running `defaults read com.adobe.CSXS.9`
+* After the plist file has been updated, read the file by, in the teminal, running `defaults read com.adobe.CSXS.4` or equivalent
 * Then restart Photoshop. The extension should be found under Windwow -> Extensions
 
 #### Manual installation on Windows
@@ -55,7 +55,7 @@ Photoshop actually uses the CIELab colorspace when converting to grayscale, whic
 
 ### Many colors in the same picker wheel
 
-Photoshops default color picker does not allow the user to have many colors on the same picker and only change one of them at the time. The default picker only changes the active color which can be the background color or the foreground color of Photoshop.
+Photoshop's default color picker does not allow the user to have many colors on the same picker and only change one of them at the time. The default picker only changes the active color which can be the background color or the foreground color of Photoshop.
 
 There is a standard extension that comes with Photoshop called Adobe Color-themes (formerly Kuler) which KalleWheel is roughly based on. Adobe color themes lets you define up to five dependent or independent colors. Adobe Color-themes, however, is not made for picking colors for painting but rather to create color themes for graphical applications or similar. I stripped away the things that I did not need from Adome Color-themes and added the things that were more important, for example more color swatches. Currently you can define twelve colors on the wheel at the same time. So far I have never needed this many colors but it is nice to have in case.
 
@@ -69,7 +69,7 @@ The greatest advantage of having the Hue and Chroma light components on a 2D sur
 
 This was actually the reason I started to paint using the Adobe Color-themes extension and eventually decided to build my own extension.
 
-What is possible in KalleWheel that I have not seen in any other color picker is to define light source colors and then see how different colors are affected (shifted) by these light sources. This is done by displaying lines which are directed in the direction of the light source ([Some theory on this topic can be found here](http://kbladin.se/tools/color_changes.php), this is written before i made KalleWheel). The tool is just made to be used as a guideline but actually helps when picking colors for illuminated objects when painting digitally.
+What is possible in KalleWheel that I have not seen in any other color picker is to define light source colors and then see how different colors are affected (shifted) by these light sources. This is done by displaying lines which are directed in the direction of the light source ([Some theory on this topic can be found here](http://kbladin.se/tools/color_changes.php), this is written before i made KalleWheel). This idea is made to be used as a guideline but actually helps when picking colors for illuminated objects when painting digitally.
 
 ![](doc_images/directions.png "KalleWheel direction indicators")
 
@@ -87,6 +87,13 @@ What is possible in KalleWheel that I have not seen in any other color picker is
 * Possibile to resize the extension window.
 * Swatches are saved and reimported for reuse
 * Four vertex gamut mask that can be edited and reimported when restarting the application.
+
+### Detailed usage of settings
+
+KalleWheel will save settings in Photoshop's settings folder (on Mac os: `/Users/<user>/Library/Preferences/Adobe Photoshop <version> Settings`). These can be exported or imported externally. The settings files are:
+
+* `KalleWheelSwatches.aco` - Swatches imported at initialization and exported when changing colors.
+* `KalleWheelGamutMask.json` - Gamut mask imported at initialization and exported when gamut mask is updated.
 
 ### Current limitations
 
