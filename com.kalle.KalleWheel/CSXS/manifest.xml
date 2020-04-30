@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ExtensionManifest Version="4.0" ExtensionBundleId="com.kalle.KalleWheel" ExtensionBundleVersion="1.2.0"
+		ExtensionBundleName="KalleWheel" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Author><![CDATA[Kalle Bladin]]></Author>
+	<Contact mailto="kallebladin@gmail.com"><![CDATA[http://kbladin.se]]></Contact>
+	<Legal>
+		<![CDATA[KalleWheel is an extension made to make it easier for digital painters to choose colors in
+Photoshop.
+
+Copyright (c) 2017-2020, Kalle Bladin
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL KALLE BLADIN OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
+OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+External libraries used in this project are:
+
+* the javascript library Chroma
+* XTools scripting library for Photoshop
+* Json-js JSON Library
+* Tippy.js Javascript tooltip library
+* Icons made by Freepik from www.flaticon.com
+]]>
+	</Legal>
+	<Abstract href="http://kbladin.se/tools/kalle_wheel.php">
+		<![CDATA[A custom color wheel extension for Adobe Photoshop.
+
+KalleWheel is an extension made to make it easier for digital painters to choose colors in
+Photoshop.
+
+Features:
+
+* HCL (LAB) color space
+* Many colors in the same picker wheel
+* Light source direction indicators
+* Gamut masks]]>
+	</Abstract>
+	<ExtensionList>
+		<Extension Id="com.kalle.KalleWheel" Version="1.2" />
+	</ExtensionList>
+	<ExecutionEnvironment>
+		<HostList>
+			<Host Name="PHXS" Version="12.0" />
+			<Host Name="PHSP" Version="12.0" />
+		</HostList>
+		<LocaleList>
+			<Locale Code="All" />
+		</LocaleList>
+		<RequiredRuntimeList>
+			<RequiredRuntime Name="CSXS" Version="4.0" />
+		</RequiredRuntimeList>
+	</ExecutionEnvironment>
+	<DispatchInfoList>
+		<Extension Id="com.kalle.KalleWheel">
+			<DispatchInfo >
+				<Resources>
+				<MainPath>./index.html</MainPath>
+				<ScriptPath>./jsx/Photoshop.jsx</ScriptPath>
+				<CEFCommandLine>
+					<Parameter>--allow-file-access</Parameter>
+					<Parameter>--allow-file-access-from-files</Parameter>
+				</CEFCommandLine>
+				</Resources>
+				<Lifecycle>
+					<AutoVisible>true</AutoVisible>
+				</Lifecycle>
+				<UI>
+					<Type>Panel</Type>
+					<Menu>KalleWheel</Menu>
+					<Geometry>
+						<Size>
+							<Height>346</Height>
+							<Width>202</Width>
+						</Size>
+						<MaxSize>
+							<Height>724</Height>
+							<Width>500</Width>
+						</MaxSize>
+						<MinSize>
+							<Height>346</Height>
+							<Width>202</Width>
+						</MinSize>
+					</Geometry>
+				</UI>
+			</DispatchInfo>
+		</Extension>
+	</DispatchInfoList>
+</ExtensionManifest>

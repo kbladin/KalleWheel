@@ -1,6 +1,7 @@
-KalleWheel is an opensource project in the form of a color picker photoshop extension.
+KalleWheel is an extension made to make it easier for digital painters to choose colors in
+Photoshop.
 
-Copyright (c) 2015, Kalle Bladin
+Copyright (c) 2015-2020, Kalle Bladin
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -24,9 +25,10 @@ OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-The library chroma.js, used in this software is:
+External libraries used in this project are:
 
-chroma.js - JavaScript library for color conversions
-
-Copyright (c) 2011-2015, Gregor Aisch
-All rights reserved.
+* the javascript library Chroma
+* XTools scripting library for Photoshop
+* Json-js JSON Library
+* Tippy.js Javascript tooltip library
+* Icons made by Freepik from www.flaticon.com
