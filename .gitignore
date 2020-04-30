@@ -1,2 +1,4 @@
 *.DS_Store
 *.zxp
+*.p12
+*.vscode
