@@ -592,6 +592,63 @@ CanvasState.prototype.drawBlendGlyph = function(blendValue) {
     }
 }
 
+CanvasState.prototype.drawColorGlyph = function(colorGlyph, size, lineWidth, type) {
+    var canvas = this.foreground;
+    var context = canvas.getContext("2d");
+    var width  = canvas.width;
+    var height = canvas.height;
+    var radius = Math.min(width/2, height/2);
+    if (this.getForegroundColorGlyph().z >= 50) 
+        borderColor = '#000000';
+    else
+        borderColor = '#FFFFFF';
+
+    var color = colorGlyph.getColor();
+        
+    context.lineWidth = lineWidth;
+    dotSize = size;
+
+    context.fillStyle = color.hex();
+    context.strokeStyle = borderColor;
+
+    if (type == 0) {
+        // Circle
+        context.beginPath();
+        context.arc((colorGlyph.x + 1) * radius,(colorGlyph.y + 1) * radius, dotSize, 0, 2 * Math.PI, false);
+        context.fill();
+        context.stroke();
+    } else if (type == 1) {
+        // Square
+        var xPos = (colorGlyph.x + 1) * radius;
+        var yPos = (colorGlyph.y + 1) * radius;
+        context.beginPath();
+        context.moveTo(xPos - dotSize, yPos - dotSize);
+        context.lineTo(xPos + dotSize, yPos - dotSize);
+        context.lineTo(xPos + dotSize, yPos + dotSize);
+        context.lineTo(xPos - dotSize, yPos + dotSize);
+        context.lineTo(xPos - dotSize, yPos - dotSize); // Last two wraps around
+        context.lineTo(xPos + dotSize, yPos - dotSize); // Last two wraps around
+        //context.closePath(); // closePath() somehow makes the fill not work
+        context.fill();
+        context.stroke();
+    } else if (type == 2) {
+        // Diamond
+        context.fillStyle = colorGlyph.getColor().hex();
+        context.beginPath();
+
+        var xPos = (colorGlyph.x + 1) * radius;
+        var yPos = (colorGlyph.y + 1) * radius;
+        context.moveTo(Math.cos(0 * Math.PI / 2) * dotSize + xPos, Math.sin(0 * Math.PI / 2) * dotSize + yPos);
+        context.lineTo(Math.cos(1 * Math.PI / 2) * dotSize + xPos, Math.sin(1 * Math.PI / 2) * dotSize + yPos);
+        context.lineTo(Math.cos(2 * Math.PI / 2) * dotSize + xPos, Math.sin(2 * Math.PI / 2) * dotSize + yPos);
+        context.lineTo(Math.cos(3 * Math.PI / 2) * dotSize + xPos, Math.sin(3 * Math.PI / 2) * dotSize + yPos);
+        context.lineTo(Math.cos(4 * Math.PI / 2) * dotSize + xPos, Math.sin(4 * Math.PI / 2) * dotSize + yPos); // Last two wraps around
+        context.lineTo(Math.cos(5 * Math.PI / 2) * dotSize + xPos, Math.sin(5 * Math.PI / 2) * dotSize + yPos); // Last two wraps around
+        context.fill();
+        context.stroke();
+    }
+}
+
 CanvasState.prototype.drawColorGlyphs = function() {
     var canvas = this.foreground;
     var context = canvas.getContext("2d");
@@ -621,43 +678,23 @@ CanvasState.prototype.drawColorGlyphs = function() {
     for (var i = 0; i < this.colorGlyphs.length; i++) {
         var color = this.colorGlyphs[i].getColor();
         if (this.colorGlyphs[i].visible) {
-            if (i == activeColor){
-                context.lineWidth = 5;
-                dotSize = 10;
-            }
-            else{
-                context.lineWidth = 2;
-                dotSize = 7;
-            }
-            
-            context.fillStyle = color.hex();
-            context.strokeStyle = borderColor;
-            
-            if (!this.colorGlyphs[i].locked) {
-                context.beginPath();
-                context.arc((this.colorGlyphs[i].x + 1) * radius,(this.colorGlyphs[i].y + 1) * radius, dotSize, 0, 2 * Math.PI, false);
-                context.fill();
-                context.stroke();
-            } else {
-                var xPos = (this.colorGlyphs[i].x + 1) * radius;
-                var yPos = (this.colorGlyphs[i].y + 1) * radius;
-                context.beginPath();
-                context.moveTo(xPos - dotSize, yPos - dotSize);
-                context.lineTo(xPos + dotSize, yPos - dotSize);
-                context.lineTo(xPos + dotSize, yPos + dotSize);
-                context.lineTo(xPos - dotSize, yPos + dotSize);
-                context.lineTo(xPos - dotSize, yPos - dotSize); // Last two wraps around
-                context.lineTo(xPos + dotSize, yPos - dotSize); // Last two wraps around
-                //context.closePath(); // closePath() somehow makes the fill not work
-                context.fill();
-                context.stroke();
-            }
             // Change color of radio button
             var span = document.getElementById("radio" + i).nextSibling.firstChild;
             span.style.backgroundColor = color.hex();
             span.style.backgroundImage = "none";
+
+            if (i == activeColor) {
+                // Draw active color glyph last
+                continue;
+            }
+                
+            lineWidth = 2;
+            dotSize = 7;
+            type = !this.colorGlyphs[i].locked ? 0 : 1;
+            this.drawColorGlyph(this.colorGlyphs[i], dotSize, lineWidth, type);
         }
         else {
+            // Radio button should represent hidden color
             var span = document.getElementById("radio" + i).nextSibling.firstChild;
             var color2 = color;
             lab = color2.lab(); 
@@ -666,27 +703,17 @@ CanvasState.prototype.drawColorGlyphs = function() {
             span.style.backgroundImage = "radial-gradient(" + color.hex() + " 50%, " + color2.hex() + " 50%)";
             span.style.backgroundSize = "4px 4px";
         }
+
         // Draw background color glyph
+        lineWidth = 5;
         dotSize = 12;
-        context.fillStyle = this.backgroundColorGlyph.getColor().hex();
-        context.beginPath();
-
-        var xPos = (this.backgroundColorGlyph.x + 1) * radius;
-        var yPos = (this.backgroundColorGlyph.y + 1) * radius;
-        context.moveTo(Math.cos(0 * Math.PI / 2) * dotSize + xPos, Math.sin(0 * Math.PI / 2) * dotSize + yPos);
-        context.lineTo(Math.cos(1 * Math.PI / 2) * dotSize + xPos, Math.sin(1 * Math.PI / 2) * dotSize + yPos);
-        context.lineTo(Math.cos(2 * Math.PI / 2) * dotSize + xPos, Math.sin(2 * Math.PI / 2) * dotSize + yPos);
-        context.lineTo(Math.cos(3 * Math.PI / 2) * dotSize + xPos, Math.sin(3 * Math.PI / 2) * dotSize + yPos);
-        context.lineTo(Math.cos(4 * Math.PI / 2) * dotSize + xPos, Math.sin(4 * Math.PI / 2) * dotSize + yPos); // Last two wraps around
-        context.lineTo(Math.cos(5 * Math.PI / 2) * dotSize + xPos, Math.sin(5 * Math.PI / 2) * dotSize + yPos); // Last two wraps around
-        //context.closePath(); // closePath() somehow makes the fill not work
-        context.fill();
-        context.stroke();
-
-        //context.arc((this.backgroundColor.lab()[1] + 1) * radius,(this.backgroundColor.lab()[2] + 1) * radius, dotSize, 0, 2 * Math.PI, false);
-        //context.fill();
-        //context.stroke();
-
+        type = 2;
+        this.drawColorGlyph(this.backgroundColorGlyph, dotSize, lineWidth, type);
+        
+        // Draw active color glyph
+        dotSize = 10;
+        type = !this.colorGlyphs[activeColor].locked ? 0 : 1;
+        this.drawColorGlyph(this.colorGlyphs[activeColor], dotSize, lineWidth, type);
 
         // Set color of indicators
         var color = this.getForegroundColorGlyph().getColor();
