@@ -235,7 +235,9 @@ function mouseExit(e) {
 
 function redrawForeground() {
       cs.clearForeground();
-      cs.drawCross(0,0);
+      if (displayOriginMenuItem_isChecked) {
+            cs.drawCross(0,0);
+      }
       cs.drawLightTraceLines();
       cs.drawExternalLightTraceLines();
       cs.drawBlendLine();
@@ -401,6 +403,23 @@ function openExternalWebsite() {
       cep.util.openURLInDefaultBrowser("http://kbladin.se/tools/kalle_wheel.php");
 }
 
+// TODO : Put in data structure that can be saved and loaded
+var displayOriginMenuItem_isChecked = true;
+function flyoutMenuClickedHandler(event) {
+      switch (event.data.menuId) {
+            case "displayOriginMenuItem":
+                  displayOriginMenuItem_isChecked = !displayOriginMenuItem_isChecked;
+                  csi.updatePanelMenuItem("Display origin", true, displayOriginMenuItem_isChecked);
+                  drawCanvas();
+                  break;
+            case "openWebsiteMenuItem":
+                  openExternalWebsite();
+                  break;
+            default:
+                  ;
+      }
+}
+
 // Create canvas
 var numColors = 12;
 var cs = new CanvasState(
@@ -433,8 +452,21 @@ tippy('#info', {
       interactive: true
 });
 
+var flyoutXML = '\
+<Menu> \
+<MenuItem Id="displayOriginMenuItem" Label="Display origin" Enabled="true" Checked="true"/> \
+\
+<MenuItem Label="---" /> \
+<MenuItem Id="openWebsiteMenuItem" Label="Go to project website" Enabled="true" Checked="false"/> \
+\
+<MenuItem Label="---" /> \
+\
+</Menu>';
+
 // CS interface events
 var csi = new CSInterface();
+csi.setPanelFlyoutMenu(flyoutXML);
+csi.addEventListener("com.adobe.csxs.events.flyoutMenuClicked", flyoutMenuClickedHandler);
 csi.addEventListener( "colorImported", importForegroundColorEvent);
 csi.addEventListener( "backgroundColorImported", importBackgroundColorEvent);
 csi.addEventListener( "swatchesImported", importSwatches);
